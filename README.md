@@ -12,7 +12,7 @@ Serão oferecidas duas edições da oficina, cada uma com dois encontros de 3 ho
 (2) 01 e 08 de Abril de 2016, sexta-feitas, das 9h as 12h - sala a definir
 
 ## Quem pode participar?
-Podem participar da oficina alun@s (e ex-alun@s) de pós-graduação e professor@s do DCP-USP, alun@s de graduação em ciências sociais da FFLCH-USP atualmente matriculad@s e pesquisador@s dos centros de estudo vínculados ao DCP-USP. Serão oferecidas 24 vagas em cada edição. Caso haja mais de 24 inscritos, sortearemos os participantes. Caso haja menos de 24 inscritos, a participação será livre.
+Podem participar da oficina alun@s (e ex-alun@s) de pós-graduação e professor@s do DCP-USP, alun@s de graduação em ciências sociais da FFLCH-USP atualmente matriculad@s e pesquisador@s dos centros de estudo vínculados ao DCP-USP. Serão oferecidas 24 vagas em cada edição. Caso haja mais de 24 inscritos, sortearemos os participantes. Caso haja menos de 24 inscritos, a participação será livre para qualquer interessado.
 
 ## Inscrições:
 Para participar, preencha o fomulário do link a seguir. Por favor, indique em qual das edições pode participar (você pode indicar as duas se puder partipar de ambas). A inscrição é gratuita.
