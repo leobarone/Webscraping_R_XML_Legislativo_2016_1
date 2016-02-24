@@ -1,5 +1,4 @@
-# Webscraping_R_XML
-Oficina de webscraping de dados Legislativos com R e XML (Departamento de Ciência Política - USP)
+## Oficina de webscraping de dados Legislativos com R e XML (Departamento de Ciência Política - USP)
 Instrutor@s: Leonardo S. Barone (DCP-USP) e Alexia Aslan (NECI-USP)
 
 # Objetivos
