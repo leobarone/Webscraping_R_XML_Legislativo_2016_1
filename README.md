@@ -8,7 +8,9 @@ Trata-se de uma brevíssima introdução (e não de um curso completo) limitada 
 
 ## Quando e onde?
 Serão oferecidas duas edições da oficina, cada uma com dois encontros de 3 horas cada:
+
 (1) 11 e 18 de Março de 2016, sextas-feiras, das 9h as 12h - sala 122 
+
 (2) 06 e 20 de Abril de 2016, quartas-feiras, das 9h as 12h - sala a definir
 
 ## Quem pode participar?
