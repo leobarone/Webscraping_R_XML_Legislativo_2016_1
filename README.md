@@ -2,7 +2,7 @@
 Instrutor@s: Leonardo S. Barone (DCP-USP) e Alexia Aslan (NECI-USP)
 
 ## Objetivos
-O objetivo da oficina é fornecer uma breve introdução à captura de dados na internet usando a linguagem R e sua funcionalidades relacionadas à XML. Focaremos no aprendizado de estratégias de captura de páginas simples de internet, como páginas de Legislativos brasileiros e/ou de jornais com a finalidade de contruir bases de dados úteis à pesquisa em ciência política.
+O objetivo da oficina é fornecer uma breve introdução à captura de dados na internet usando a linguagem R e sua funcionalidades relacionadas a XML. Focaremos no aprendizado de estratégias de captura de páginas simples de internet, como páginas de Legislativos brasileiros e/ou de jornais com a finalidade de contruir bases de dados úteis à pesquisa em ciência política.
 
 Trata-se de uma brevíssima introdução (e não de um curso completo) limitada à captura de páginas cujo cógido HTML é simples. Não trataremos de APIs, páginas de redes de relacionamentos ou páginas que requerem estratégias sofisticadas de captura.
 
