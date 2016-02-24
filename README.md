@@ -19,7 +19,7 @@ Podem participar da oficina alun@s (e ex-alun@s) de pós-graduação e professor
 ## Inscrições:
 Para participar, preencha o fomulário do link a seguir. Por favor, indique em qual das edições pode participar (você pode indicar as duas se puder partipar de ambas). A inscrição é gratuita.
 
-Link para o formulário: http://goo.gl/forms/Vl1MJCKVuh
+Link para o formulário: http://goo.gl/forms/depBd7F99H
 
 Inscrever-se até dia 03 de março de 2016.
 
