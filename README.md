@@ -8,7 +8,7 @@ Trata-se de uma brevíssima introdução (e não de um curso completo) limitada 
 
 ## Quando e onde?
 Serão oferecidas duas edições da oficina, cada uma com dois encontros de 3 horas cada:
-(1) 09 e 16 de Março de 2016, sexta-feitas, das 9h as 12h - sala 122 
+(1) 11 e 18 de Março de 2016, sexta-feitas, das 9h as 12h - sala 122 
 (2) 01 e 08 de Abril de 2016, sexta-feitas, das 9h as 12h - sala a definir
 
 ## Quem pode participar?
@@ -20,7 +20,7 @@ Para participar, preencha o fomulário do link a seguir. Por favor, indique em q
 Link para o formulário: http://goo.gl/forms/Vl1MJCKVuh
 
 ## Requisitos (IMPORTANTE)
-O requisito para participação é conhecer o básico da linguagem R OU realizar gratuitamente o curso "Introduction to R" no site Datacamp: https://www.datacamp.com/courses/free-introduction-to-r, com duração aproximada de 4 horas. Aviso: sem um conhecimento básico da linguagem R não será possível aproveitar adequadamente a oficina.
+O requisito para participação é conhecer o básico da linguagem R OU realizar gratuitamente e antes do primeiro encontro o curso "Introduction to R" no site Datacamp: https://www.datacamp.com/courses/free-introduction-to-r, com duração aproximada de 4 horas. Aviso: sem um conhecimento básico da linguagem R não será possível aproveitar adequadamente a oficina. Por favor, não se inscriva se não puder atender a este requisito.
 
 ## Certificado
 Está é uma oficina livre e gratuita e não haverá emissão de certificado de participação
