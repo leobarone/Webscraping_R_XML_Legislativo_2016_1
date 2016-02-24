@@ -26,3 +26,6 @@ O requisito para participação é conhecer o básico da linguagem R OU realizar
 
 ## Certificado
 Está é uma oficina livre e gratuita e não haverá emissão de certificado de participação
+
+## Materiais
+R é uma linguagem/ambiente livre e gratuito. Os materiais e atividade da oficina ficarão disponíveis neste repositório na forma de material auto-didático. Se, por acaso, você não tiver chance de participar pode, dar uma olhada por aqui ao final das oficinas.
