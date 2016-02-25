@@ -24,10 +24,10 @@ Link para o formulário: http://goo.gl/forms/depBd7F99H
 Inscrever-se até dia 03 de março de 2016.
 
 ## Requisitos (IMPORTANTE)
-O requisito para participação é conhecer o básico da linguagem R OU realizar gratuitamente e antes do primeiro encontro o curso "Introduction to R" no site Datacamp: https://www.datacamp.com/courses/free-introduction-to-r, com duração aproximada de 4 horas. Aviso: sem um conhecimento básico da linguagem R não será possível aproveitar adequadamente a oficina. Por favor, não se inscriva se não puder atender a este requisito.
+O requisito para participação é conhecer o básico da linguagem R OU realizar gratuitamente e antes do primeiro encontro o curso "Introduction to R" no site Datacamp: https://www.datacamp.com/courses/free-introduction-to-r, com duração aproximada de 4 horas. Aviso: sem um conhecimento básico da linguagem R não será possível aproveitar adequadamente a oficina. Por favor, não se inscreva se não puder atender a este requisito.
 
 ## Certificado
 Está é uma oficina livre e gratuita e não haverá emissão de certificado de participação
 
 ## Materiais
-R é uma linguagem/ambiente livre e gratuito. Os materiais e atividade da oficina ficarão disponíveis neste repositório na forma de material auto-didático. Se, por acaso, você não tiver chance de participar pode, dar uma olhada por aqui ao final das oficinas.
+R é uma linguagem/ambiente livre e gratuita. Os materiais e atividade da oficina ficarão disponíveis neste repositório na forma de material auto-didático. Se, por acaso, você não tiver chance de participar pode dar uma olhada por aqui ao final das oficinas.
