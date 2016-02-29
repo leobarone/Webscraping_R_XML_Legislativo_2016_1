@@ -1,0 +1,56 @@
+---
+title: "Oficina de webscraping de dados Legislativos com R e XML - Atividade 1"
+author: "Leonardo Sangali Barone e Alexia Aslan"
+date: "03-08-2015"
+output: pdf_document
+---
+
+# Pacotes no R
+
+Algumas das funções que vamos utilizar nesta atividade não estão na biblioteca básica do R. Temos, dessa forma, que começar instalando uma biblioteca chamada "XML". A biblioteca já está instalada nos computadores que vamos utilizar hoje. Porám, vamos refazer o processo de instalação para aprender um pouco mais. Execute o comando abaixo:
+
+```{r}
+install.packages("XML")
+```
+
+Uma vez instalada a biblioteca, as funções não estão automaticamente disponíveis. Para torná-las disponíveis é preciso "chamar" a biblioteca. Vamos fazer isso com a biblioteca "XML". Execute o comando abaixo:
+
+```{r}
+library(XML)
+```
+
+Excelente! Já temos as funções que precisamos disponíveis na nossa sessão. Vamos utilizá-las logo mais.
+
+# Atividade inicial - Pesquisa de Proposições na ALESP
+
+## For loop e links com numeração de página
+
+Vamos começar visitando o site da ALESP e entrar na ferramenta de pesquisa de proposições: http://www.al.sp.gov.br/alesp/pesquisa-proposicoes/
+No site, vamos elaborar uma pesquisa qualquer que retorne uma quantidade de respostas que manualmente seria no mínimo ineficiente coletarmos.
+Por exemplo, podemos pesquisa por todos os Projetos de Lei relacionados à palavra "água".
+
+Na data deste tutorial, eram 2067 documentos. O resultado, porém, está espalhado em 207 tabelas de 10 linhas.
+Há 4 informações sobre os projetos: data, título (e número do projeto), autor e etapa.
+
+Nossa primeira atividade consiste em capturar estas informações. Vamos, no decorrer da atividade aprender bastante sobre R, objetos, estruturas de dados, loops e captura de tabelas em HTML
+
+Em primeiro lugar, vamos copiar o link do resultado da busca. Veja que o link contém diversas informações sobre a busca.
+Em diversos casos essas informações são exatamente os parâmetros da busca que você realizou (nem sempre, porém - vamos aprender a identificar)!
+
+Vamos fazer um teste: passemos para a página seguinte da busca e vamos ver o que muda no link.
+
+Vamos armazenar em um objeto ("baseurl", mas você pode
+
+```{r}
+library(XML)
+
+url_base <- "http://www.al.sp.gov.br/alesp/pesquisa-proposicoes/?direction=inicio&lastPage=0&currentPage=FRANGO&act=detalhe&idDocumento=&rowsPerPage=100&currentPageDetalhe=1&tpDocumento=&method=search&text=%E1gua&natureId=&legislativeNumber=&legislativeYear=&natureIdMainDoc=&anoDeExercicio=&legislativeNumberMainDoc=&legislativeYearMainDoc=&strInitialDate=&strFinalDate=&author=&supporter=&politicalPartyId=&tipoDocumento=&stageId=&strVotedInitialDate=&strVotedFinalDate="
+
+dados <- data.frame()
+for (i in 0:19){
+  print(i)
+  url <- gsub("FRANGO", i, url_base)
+  tabela <- readHTMLTable(url)[[1]]
+  dados <- rbind(dados, tabela)
+}
+```
