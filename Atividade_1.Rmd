@@ -1,7 +1,7 @@
 ---
 title: "Oficina de webscraping de dados Legislativos com R e XML - Atividade 1"
 author: "Leonardo Sangali Barone e Alexia Aslan"
-date: "03-08-2015"
+date: "11-03-2016"
 output: pdf_document
 ---
 
@@ -10,7 +10,7 @@ output: pdf_document
 Algumas das funções que vamos utilizar nesta atividade não estão na biblioteca básica do R. Temos, dessa forma, que começar instalando uma biblioteca chamada "XML". A biblioteca já está instalada nos computadores que vamos utilizar hoje. Porám, vamos refazer o processo de instalação para aprender um pouco mais. Execute o comando abaixo:
 
 ```{r}
-install.packages("XML")
+#install.packages("XML")
 ```
 
 Uma vez instalada a biblioteca, as funções não estão automaticamente disponíveis. Para torná-las disponíveis é preciso "chamar" a biblioteca. Vamos fazer isso com a biblioteca "XML". Execute o comando abaixo:
@@ -27,9 +27,9 @@ Excelente! Já temos as funções que precisamos disponíveis na nossa sessão. 
 
 Vamos começar visitando o site da ALESP e entrar na ferramenta de pesquisa de proposições: http://www.al.sp.gov.br/alesp/pesquisa-proposicoes/
 No site, vamos elaborar uma pesquisa qualquer que retorne uma quantidade de respostas que manualmente seria no mínimo ineficiente coletarmos.
-Por exemplo, podemos pesquisa por todos os Projetos de Lei relacionados à palavra "água".
+Por exemplo, podemos pesquisa por todos os Projetos de Lei relacionados à palavra "merenda".
 
-Na data deste tutorial, eram 2067 documentos. O resultado, porém, está espalhado em 207 tabelas de 10 linhas.
+Na data deste tutorial, eram 747 documentos. O resultado, porém, está espalhado em 75 tabelas de 10 linhas.
 Há 4 informações sobre os projetos: data, título (e número do projeto), autor e etapa.
 
 Nossa primeira atividade consiste em capturar estas informações. Vamos, no decorrer da atividade aprender bastante sobre R, objetos, estruturas de dados, loops e captura de tabelas em HTML
@@ -39,7 +39,21 @@ Em diversos casos essas informações são exatamente os parâmetros da busca qu
 
 Vamos fazer um teste: passemos para a página seguinte da busca e vamos ver o que muda no link.
 
-Vamos armazenar em um objeto ("baseurl", mas você pode
+Vamos armazenar em um objeto ("url_base", mas você pode dar qualquer nome que quiser).
+
+```{r}
+url_base <- "http://www.al.sp.gov.br/alesp/pesquisa-proposicoes/?direction=inicio&lastPage=0&currentPage=0&act=detalhe&idDocumento=&rowsPerPage=10&currentPageDetalhe=1&tpDocumento=&method=search&text=merenda&natureId=&legislativeNumber=&legislativeYear=&natureIdMainDoc=&anoDeExercicio=&legislativeNumberMainDoc=&legislativeYearMainDoc=&strInitialDate=&strFinalDate=&author=&supporter=&politicalPartyId=&tipoDocumento=&stageId=&strVotedInitialDate=&strVotedFinalDate=#"
+```
+Há muitas informações nesse link, basicamente todos os campos que poderiam ter sido especificados na busca são apresentados no link. Como preenchemos apenas com o termo ("merenda"), esse será o único parametro definido na URL ("text=merenda").
+
+Algo também importante é identificar como as páginas mudando se manifestam na URL.
+Lembra que clicamos para a página seguinte para notar o que havia ficado diferente? Descobrimos que na URL, o que varia ao clicar na próxima página é o "currentPage=0"
+
+
+
+
+
+Em seguida, precisamos de uma estrutura que armazene 
 
 ```{r}
 library(XML)
