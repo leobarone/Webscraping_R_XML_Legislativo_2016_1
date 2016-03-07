@@ -32,13 +32,15 @@ Por exemplo, podemos pesquisa por todos os Projetos de Lei relacionados à palav
 Na data deste tutorial, eram 747 documentos. O resultado, porém, está espalhado em 75 tabelas de 10 linhas.
 Há 4 informações sobre os projetos: data, título (e número do projeto), autor e etapa.
 
-Nossa primeira tarefa consiste em capturar estas informações. Vamos, no decorrer da atividade aprender bastante sobre R, objetos, estruturas de dados, loops e captura de tabelas em HTML
+Nossa primeira tarefa consiste em capturar estas informações. Vamos, no decorrer da atividade aprender bastante sobre R, objetos, estruturas de dados, loops e captura de tabelas em HTML.
 
 Vamos armazenar a URL em um objeto ("url_base", mas você pode dar qualquer nome que quiser).
 
 ```{r}
 url_base <- "http://www.al.sp.gov.br/alesp/pesquisa-proposicoes/?direction=inicio&lastPage=0&currentPage=0&act=detalhe&idDocumento=&rowsPerPage=10&currentPageDetalhe=1&tpDocumento=&method=search&text=merenda&natureId=&legislativeNumber=&legislativeYear=&natureIdMainDoc=&anoDeExercicio=&legislativeNumberMainDoc=&legislativeYearMainDoc=&strInitialDate=&strFinalDate=&author=&supporter=&politicalPartyId=&tipoDocumento=&stageId=&strVotedInitialDate=&strVotedFinalDate=#"
 ```
+
+Há muitas informações nesse link, basicamente todos os campos que poderiam ter sido especificados na busca são apresentados no link. Como preenchemos apenas com o termo ("merenda"), esse será o único parametro definido na URL ("text=merenda").
 
 Podemos ver que há muitas páginas de resultado para a palavra-chave que utilizamos. Nosso desafio é conseguir passar de forma eficiente por elas. Para isso, usaremos uma função essencial na programação, o "for loop".
 
@@ -69,30 +71,107 @@ Os argumentos (o que vai entre os parenteses) da função é, em ordem, o termo 
 Na prática, ela funciona da seguinte forma:
 
 ```{r}
-onde_quero_substituir <- "quero substituir essa palavra"
 o_que_procuro_para_susbtituir <- "palavra"
 o_que_quero_substituir_por <- "batata"
+onde_quero_substituir <- "quero substituir essa palavra"
 
 texto_final <- gsub(o_que_procuro_para_susbtituir, o_que_quero_substituir_por, onde_quero_substituir)
 
 print(texto_final)
 ```
 
+Agora que sabemos substituir texto em outros textos e fazer loops, podemos mudar o número da página do nosso endereço de pesquisa.
 
-Em primeiro lugar, vamos copiar o link do resultado da busca. Veja que o link contém diversas informações sobre a busca.
-Em diversos casos essas informações são exatamente os parâmetros da busca que você realizou (nem sempre, porém - vamos aprender a identificar)!
+Vamos pegar o nosso url_base e achar onde que o número da página fica. Experimente passar para a página seguinte da busca e vamos ver o que muda no link. 
 
-Vamos fazer um teste: passemos para a página seguinte da busca e vamos ver o que muda no link.
+```{r}
+url_base <- "http://www.al.sp.gov.br/alesp/pesquisa-proposicoes/?direction=inicio&lastPage=0&currentPage=0&act=detalhe&idDocumento=&rowsPerPage=10&currentPageDetalhe=1&tpDocumento=&method=search&text=merenda&natureId=&legislativeNumber=&legislativeYear=&natureIdMainDoc=&anoDeExercicio=&legislativeNumberMainDoc=&legislativeYearMainDoc=&strInitialDate=&strFinalDate=&author=&supporter=&politicalPartyId=&tipoDocumento=&stageId=&strVotedInitialDate=&strVotedFinalDate=#"
+```
 
-Há muitas informações nesse link, basicamente todos os campos que poderiam ter sido especificados na busca são apresentados no link. Como preenchemos apenas com o termo ("merenda"), esse será o único parametro definido na URL ("text=merenda").
+Descobrimos que na URL, o que varia ao clicar na próxima página é o "currentPage=0" que vai para "currentPage=1". Nesse caso é o "0" como primeira página e o "1" como segunda e assim por diante, mas isso não é uma regra. A busca podia ter iniciado no "1" e a página dois ser "2".
 
-Algo também importante é identificar como as páginas mudando se manifestam na URL.
-Lembra que clicamos para a página seguinte para notar o que havia ficado diferente? Descobrimos que na URL, o que varia ao clicar na próxima página é o "currentPage=0"
+Já sabemos onde a página muda, então podemos escrever o código que diz para substituir essa parte da URL pelo número que queremos. Vamos testar primeiro com uma página apenas. Para isso, achamos o lugar que está o "currentPage=0" e substituimos na url_base por algum termo que provavelmente não apareceria em um endereço de internet como esse.
+
+No caso, usaremos "FRANGO". Lembrar que ao colocar na URL, não devemos usar as aspas mas elas se mantém ao escrever a função, pois queremos dizer que procuramos a palavra FRANGO e não o objeto FRANGO.
+
+```{r}
+url_base <- "http://www.al.sp.gov.br/alesp/pesquisa-proposicoes/?direction=inicio&lastPage=0&currentPage=FRANGO&act=detalhe&idDocumento=&rowsPerPage=10&currentPageDetalhe=1&tpDocumento=&method=search&text=merenda&natureId=&legislativeNumber=&legislativeYear=&natureIdMainDoc=&anoDeExercicio=&legislativeNumberMainDoc=&legislativeYearMainDoc=&strInitialDate=&strFinalDate=&author=&supporter=&politicalPartyId=&tipoDocumento=&stageId=&strVotedInitialDate=&strVotedFinalDate=#"
+i = 6
+url <- gsub("FRANGO", i, url_base)
+print(url)
+```
+
+Agora que temos o código substituindo funcionando, vamos implementar o loop para que as URLs das páginas sejam coletadas automaticamente:
+
+```{r}
+url_base <- "http://www.al.sp.gov.br/alesp/pesquisa-proposicoes/?direction=inicio&lastPage=0&currentPage=FRANGO&act=detalhe&idDocumento=&rowsPerPage=10&currentPageDetalhe=1&tpDocumento=&method=search&text=merenda&natureId=&legislativeNumber=&legislativeYear=&natureIdMainDoc=&anoDeExercicio=&legislativeNumberMainDoc=&legislativeYearMainDoc=&strInitialDate=&strFinalDate=&author=&supporter=&politicalPartyId=&tipoDocumento=&stageId=&strVotedInitialDate=&strVotedFinalDate=#"
+for( i in 0:5){
+url <- gsub("FRANGO", i, url_base)
+print(url)
+}
+```
+
+Muito mais simples do que parece, não? Mas veja bem, até agora tudo que fizemos foi produzir um texto que, propositalmente, é igual ao endereço das páginas cujo conteúdo nos interessa. Porém, ainda não acessamos o seu conteúdo. Precisamos, agora, de funções que façam algo semelhante a um navegador de internet, ou seja, que se comuniquem com o servidor da página e receba o seu conteúdo.
+
+Por enquanto, vamos usar apenas a função "readHTMLTable", contida na biblioteca "XML" (lembra que chamamos esta biblioteca lá no começo da atividade?). Esta função serve bem ao nosso caso: ela recebe uma URL como argumento e captura todas as tabelas da url, escritas em HTML, e retorna uma lista contendo as tabelas. 
+Vamos ver como ela funciona para a página 1 contendo tabelas com os resultados em que aparecem o nosso termo pesquisado:
+
+```{r}
+url_base <- "http://www.al.sp.gov.br/alesp/pesquisa-proposicoes/?direction=inicio&lastPage=0&currentPage=FRANGO&act=detalhe&idDocumento=&rowsPerPage=10&currentPageDetalhe=1&tpDocumento=&method=search&text=merenda&natureId=&legislativeNumber=&legislativeYear=&natureIdMainDoc=&anoDeExercicio=&legislativeNumberMainDoc=&legislativeYearMainDoc=&strInitialDate=&strFinalDate=&author=&supporter=&politicalPartyId=&tipoDocumento=&stageId=&strVotedInitialDate=&strVotedFinalDate=#"
+i <- 1
+url <- gsub("FRANGO", i, url_base)
+tabela <- readHTMLTable(url)
+print(tabela)
+}
+```
+
+Um detalhe fundamental do resultado da função readHTMLTable é que o resultado dela é uma lista. Por que uma lista? Porque pode haver mais de uma tabela na página e cada tabela ocupará uma posição na lista. Para o R, uma lista pode combinar objetos de diversas classes: vetores, data frames, matrizes, etc. 
+No site da ALESP, já nessa pesquisa nos deparamos que a função readHTMLTable retorna várias tabelas e não apenas a dos resultados das proposições.
+
+Como acessar objetos em uma lista? Podemos ulitizar colchetes. Porém, se utilizarmos apenas um colchete, estamos obtendo uma sublista. Por exemplo, vamos criar diferentes objetos e combiná-los em uma lista:
+
+```{r}
+# Objetos variados
+matriz <- matrix(c(1:6), nrow=2)
+vetor.inteiros <- c(42:1)
+vetor.texto <- c("a", "b", "c", "d", "e")
+vetor.logico <- c(T, F, T, T, T, T, T, T, F)
+texto <- "meu querido texto"
+resposta <- 42
+
+# Lista
+minha.lista <- list(matriz, vetor.inteiros, vetor.texto, vetor.logico, texto, resposta)
+print(minha.lista)
+```
+Para produzirmos uma sublista, usamos um colchete (mesmo que a lista só tenha um elemento!):
+
+```{r}
+print(minha.lista[1:3])
+class(minha.lista[1:3])
+print(minha.lista[4])
+class(minha.lista[4])
+```
+Se quisermos usar o objeto de uma lista, ou seja, extraí-lo da lista, devemos usar dois colchetes:
+
+```{r}
+print(minha.lista[[4]])
+class(minha.lista[[4]])
+```
+
+Ao obter as tabelas de uma página como uma lista de tabelas (nem sempre vai parecer que são tabelas, exceto se você entender um pouco de HTML), devemos, portanto, utilizar dois colchetes para extrair a tabela que queremos (para poder combiná-las com as tabelas das demais páginas, algo que faremos ao final). Exemplo (no nosso caso já sabemos que a tabela que queremos ocupa a posição 1 da lista, mas é necessário examinar sempre):
+
+```{r}
+url_base <- "http://www.al.sp.gov.br/alesp/pesquisa-proposicoes/?direction=inicio&lastPage=0&currentPage=FRANGO&act=detalhe&idDocumento=&rowsPerPage=10&currentPageDetalhe=1&tpDocumento=&method=search&text=merenda&natureId=&legislativeNumber=&legislativeYear=&natureIdMainDoc=&anoDeExercicio=&legislativeNumberMainDoc=&legislativeYearMainDoc=&strInitialDate=&strFinalDate=&author=&supporter=&politicalPartyId=&tipoDocumento=&stageId=&strVotedInitialDate=&strVotedFinalDate=#"
+i <- 1
+url <- gsub("FRANGO", i, url_base)
+lista.tabelas <- readHTMLTable(url)
+tabela <- lista.tabelas[[1]]
+print(tabela)
+class(tabela)
+```
 
 
-
-
-
+----------------------------------------------------
 Em seguida, precisamos de uma estrutura que armazene 
 
 ```{r}
