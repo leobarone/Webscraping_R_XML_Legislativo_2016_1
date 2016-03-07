@@ -59,9 +59,24 @@ for (i in 1:9) {
 
 Tente agora construir um exemplo de loop que imprima na tela os números de 3 a 15 multiplicados por 10 como exerício.
 
-Ótimo! Já temos alguma intuição sobre como loops funcionam.
+Ótimo! Já temos alguma intuição sobre como loops funcionam. Será com eles que faremos a movimentação das páginas.
+O que nos falta é uma função que nos permita juntar o texto básico do link ("baseurl") com os números das páginas.
+Há mais de uma opção, mas aqui usaremos a função "gsub". 
 
+Com a função "gsub" podemos substituir em objeto de texto por outro, de acordo com o critério especificado.
+Os argumentos (o que vai entre os parenteses) da função é, em ordem, o termo a igualar, o que eu quero que coloque no lugar, onde eu quero que coloque.
 
+Na prática, ela funciona da seguinte forma:
+
+```{r}
+onde_quero_substituir <- "quero substituir essa palavra"
+o_que_procuro_para_susbtituir <- "palavra"
+o_que_quero_substituir_por <- "batata"
+
+texto_final <- gsub(o_que_procuro_para_susbtituir, o_que_quero_substituir_por, onde_quero_substituir)
+
+print(texto_final)
+```
 
 
 Em primeiro lugar, vamos copiar o link do resultado da busca. Veja que o link contém diversas informações sobre a busca.
