@@ -32,18 +32,43 @@ Por exemplo, podemos pesquisa por todos os Projetos de Lei relacionados à palav
 Na data deste tutorial, eram 747 documentos. O resultado, porém, está espalhado em 75 tabelas de 10 linhas.
 Há 4 informações sobre os projetos: data, título (e número do projeto), autor e etapa.
 
-Nossa primeira atividade consiste em capturar estas informações. Vamos, no decorrer da atividade aprender bastante sobre R, objetos, estruturas de dados, loops e captura de tabelas em HTML
+Nossa primeira tarefa consiste em capturar estas informações. Vamos, no decorrer da atividade aprender bastante sobre R, objetos, estruturas de dados, loops e captura de tabelas em HTML
+
+Vamos armazenar a URL em um objeto ("url_base", mas você pode dar qualquer nome que quiser).
+
+```{r}
+url_base <- "http://www.al.sp.gov.br/alesp/pesquisa-proposicoes/?direction=inicio&lastPage=0&currentPage=0&act=detalhe&idDocumento=&rowsPerPage=10&currentPageDetalhe=1&tpDocumento=&method=search&text=merenda&natureId=&legislativeNumber=&legislativeYear=&natureIdMainDoc=&anoDeExercicio=&legislativeNumberMainDoc=&legislativeYearMainDoc=&strInitialDate=&strFinalDate=&author=&supporter=&politicalPartyId=&tipoDocumento=&stageId=&strVotedInitialDate=&strVotedFinalDate=#"
+```
+
+Podemos ver que há muitas páginas de resultado para a palavra-chave que utilizamos. Nosso desafio é conseguir passar de forma eficiente por elas. Para isso, usaremos uma função essencial na programação, o "for loop".
+
+Loops são processos iterativos e são extremamente úteis para instruir o computador a repetir uma tarefa por um número finito de vezes. Por exemplo, vamos começar "imprimindo" na tela os números de 1 a 9:
+
+```{r}
+for (i in 1:9) {
+  print(i)
+}
+```
+Simples, não? Vamos ler esta instrução da seguinte maneira: "para cada número i no conjunto que vai de 1 até 9 (essa é a parte no parênteses) imprimir o número i (instrução entre chaves)". E se quisermos imprimir o número i multiplicado por 9 (o que nos dá a tabuada do 7!!!), como devemos fazer?
+
+```{r}
+for (i in 1:9) {
+  print(i * 7)
+}
+```
+
+Tente agora construir um exemplo de loop que imprima na tela os números de 3 a 15 multiplicados por 10 como exerício.
+
+Ótimo! Já temos alguma intuição sobre como loops funcionam.
+
+
+
 
 Em primeiro lugar, vamos copiar o link do resultado da busca. Veja que o link contém diversas informações sobre a busca.
 Em diversos casos essas informações são exatamente os parâmetros da busca que você realizou (nem sempre, porém - vamos aprender a identificar)!
 
 Vamos fazer um teste: passemos para a página seguinte da busca e vamos ver o que muda no link.
 
-Vamos armazenar em um objeto ("url_base", mas você pode dar qualquer nome que quiser).
-
-```{r}
-url_base <- "http://www.al.sp.gov.br/alesp/pesquisa-proposicoes/?direction=inicio&lastPage=0&currentPage=0&act=detalhe&idDocumento=&rowsPerPage=10&currentPageDetalhe=1&tpDocumento=&method=search&text=merenda&natureId=&legislativeNumber=&legislativeYear=&natureIdMainDoc=&anoDeExercicio=&legislativeNumberMainDoc=&legislativeYearMainDoc=&strInitialDate=&strFinalDate=&author=&supporter=&politicalPartyId=&tipoDocumento=&stageId=&strVotedInitialDate=&strVotedFinalDate=#"
-```
 Há muitas informações nesse link, basicamente todos os campos que poderiam ter sido especificados na busca são apresentados no link. Como preenchemos apenas com o termo ("merenda"), esse será o único parametro definido na URL ("text=merenda").
 
 Algo também importante é identificar como as páginas mudando se manifestam na URL.
