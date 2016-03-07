@@ -27,7 +27,7 @@ Excelente! Já temos as funções que precisamos disponíveis na nossa sessão. 
 
 Vamos começar visitando o site da ALESP e entrar na ferramenta de pesquisa de proposições: http://www.al.sp.gov.br/alesp/pesquisa-proposicoes/
 No site, vamos elaborar uma pesquisa qualquer que retorne uma quantidade de respostas que manualmente seria no mínimo ineficiente coletarmos.
-Por exemplo, podemos pesquisa por todos os Projetos de Lei relacionados à palavra "merenda".
+Por exemplo, podemos pesquisar por todas as proposições relacionados à palavra "merenda".
 
 O resultado da pesquisa é dividido em diversas páginas com 10 observações em cada uma.
 Há 4 informações sobre as proposições: data, título (e número do projeto), autor e etapa.
