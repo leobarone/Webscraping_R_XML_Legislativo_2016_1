@@ -29,8 +29,8 @@ Vamos começar visitando o site da ALESP e entrar na ferramenta de pesquisa de p
 No site, vamos elaborar uma pesquisa qualquer que retorne uma quantidade de respostas que manualmente seria no mínimo ineficiente coletarmos.
 Por exemplo, podemos pesquisa por todos os Projetos de Lei relacionados à palavra "merenda".
 
-Na data deste tutorial, eram 747 documentos. O resultado, porém, está espalhado em 75 tabelas de 10 linhas.
-Há 4 informações sobre os projetos: data, título (e número do projeto), autor e etapa.
+O resultado da pesquisa é dividido em diversas páginas com 10 observações em cada uma.
+Há 4 informações sobre as proposições: data, título (e número do projeto), autor e etapa.
 
 Nossa primeira tarefa consiste em capturar estas informações. Vamos, no decorrer da atividade aprender bastante sobre R, objetos, estruturas de dados, loops e captura de tabelas em HTML.
 
@@ -40,7 +40,7 @@ Vamos armazenar a URL em um objeto ("url_base", mas você pode dar qualquer nome
 url_base <- "http://www.al.sp.gov.br/alesp/pesquisa-proposicoes/?direction=inicio&lastPage=0&currentPage=0&act=detalhe&idDocumento=&rowsPerPage=10&currentPageDetalhe=1&tpDocumento=&method=search&text=merenda&natureId=&legislativeNumber=&legislativeYear=&natureIdMainDoc=&anoDeExercicio=&legislativeNumberMainDoc=&legislativeYearMainDoc=&strInitialDate=&strFinalDate=&author=&supporter=&politicalPartyId=&tipoDocumento=&stageId=&strVotedInitialDate=&strVotedFinalDate=#"
 ```
 
-Há muitas informações nesse link, basicamente todos os campos que poderiam ter sido especificados na busca são apresentados no link. Como preenchemos apenas com o termo ("merenda"), esse será o único parametro definido na URL ("text=merenda").
+Há muitas informações nesse link, basicamente todos os campos que poderiam ter sido especificados na busca são apresentados no endereço. Como preenchemos apenas com o termo ("merenda"), esse será o único parametro definido na URL ("text=merenda").
 
 Podemos ver que há muitas páginas de resultado para a palavra-chave que utilizamos. Nosso desafio é conseguir passar de forma eficiente por elas. Para isso, usaremos uma função essencial na programação, o "for loop".
 
@@ -64,8 +64,8 @@ Tente agora construir um exemplo de loop que imprima na tela os números de 3 a 
 ## Substituição com gsub
 
 Ótimo! Já temos alguma intuição sobre como loops funcionam. Será com eles que faremos a movimentação das páginas.
-O que nos falta é uma função que nos permita juntar o texto básico do link ("baseurl") com os números das páginas.
-Há mais de uma opção, mas aqui usaremos a função "gsub". 
+O que nos falta é uma função que nos permita juntar o texto básico do link ("url_base") com os números das páginas.
+Há mais de uma opção para realizar essa tarefa, mas aqui usaremos a função "gsub". 
 
 Com a função "gsub" podemos substituir em objeto de texto por outro, de acordo com o critério especificado.
 Os argumentos (o que vai entre os parenteses) da função é, em ordem, o termo a igualar, o que quero que coloque no lugar, onde quero que coloque.
