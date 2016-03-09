@@ -1,0 +1,40 @@
+---
+title: "Oficina de webscraping de dados Legislativos com R e XML - Atividade 2"
+author: "Leonardo Sangali Barone e Alexia Aslan"
+date: "11-03-2016"
+output: pdf_document
+---
+
+# XML e HTML
+
+Na primeira atividade da oficina não precisamos lidar com o conteúdo e a estrutura da página que estávamos capturando. Como o conteúdo que nos interessava estava em uma tabela, e o pacto "XML" contém uma função específica para captura de tabelas, gastamos apenas duas linhas de código para ter a informação capturada já organizada em um data frame.
+
+O que fazer, entretanto, com páginas que não tem tabelas? Como obter apenas as informações que nos interessam quando o conteúdo está "espalhado" pela página? Utilizaremos, como veremos abaixo, a estrutura do código HTML da própria página para selecionar apenas o que desejamos e construir data frames.
+
+XML significa "Extensive Markup Language". Ou seja, é uma linguagem -- e, portanto, tem sintaxe -- e é uma linguagem com marcação. Marcação, neste caso, significa que todo o conteúdo de um documento XML está dentro de "marcas", também conhecidas como "tags". É uma linguagem extremamente útil para transporte de dados -- por exemplo, a Câmara dos Deputados utiliza XML em seu Web Serice para disponibilizar dados abertos (mas você não precisa saber disso se quiser usar o pacote de R bRasilLegis que nós desenvolvemos ;) -- disponível aqui: https://github.com/leobarone/bRasilLegis.
+
+Por exemplo, se quisermos organizar a informação sobre um indivíduo que assumiu diversos postos públicos, poderíamos organizar a informação da seguinte maneira:
+
+```{r}
+<politicos>
+  <politico>
+    <id> 33333 </id>
+    <nome> Fulano Deputado da Silva </nome>
+    <data_nascimento> 3/3/66 </data_nascimento>
+    <sexo> Masculino </sexo>
+    <cargos>
+      <cargo> 
+        <cargo> deputado federal </cargo> 
+        <partido> PAN </partido>
+        <ano_ini> 2003 </ano_ini>
+        <ano_fim> 2006 </ano_fim>
+       </cargo>
+      <cargos>
+  </politicos>
+</politicos>
+```
+
+
+```{r}
+#install.packages("XML")
+```
