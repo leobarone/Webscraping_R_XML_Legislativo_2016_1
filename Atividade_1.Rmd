@@ -7,7 +7,7 @@ output: pdf_document
 
 # Pacotes no R
 
-Algumas das funções que vamos utilizar nesta atividade não estão na biblioteca básica do R. Temos, dessa forma, que começar instalando uma biblioteca chamada "XML". A biblioteca já está instalada nos computadores que vamos utilizar hoje. Porám, vamos refazer o processo de instalação para aprender um pouco mais. Execute o comando abaixo:
+Algumas das funções que vamos utilizar nesta atividade não estão na biblioteca básica do R. Temos, dessa forma, que começar instalando uma biblioteca chamada "XML". A biblioteca já está instalada nos computadores que vamos utilizar hoje. Porém, vamos refazer o processo de instalação para aprender um pouco mais. Execute o comando abaixo:
 
 ```{r}
 #install.packages("XML")
@@ -32,17 +32,23 @@ Por exemplo, podemos pesquisar por todas as proposições relacionados à palavr
 O resultado da pesquisa é dividido em diversas páginas com 10 observações em cada uma.
 Há 4 informações sobre as proposições: data, título (e número do projeto), autor e etapa.
 
+Podemos prosseguir, clicando nos botões de navegação ao final da página, para as demais páginas da pesquisa. Por exemplo, podemos ir para a página 2 clicando uma vez na seta indicando à direita.
+
+OBS: Há uma razão importante para começarmos nosso teste com a segunda página da busca. Em diversos servidores web, como este da ALESP, o link (endereço url) da primeira página é "diferente" dos demais. Em geral, os links são semelhantes da segunda página em diante. Você verá adiante que as informações p
+
 Nossa primeira tarefa consiste em capturar estas informações. Vamos, no decorrer da atividade aprender bastante sobre R, objetos, estruturas de dados, loops e captura de tabelas em HTML.
 
 Vamos armazenar a URL em um objeto ("url_base", mas você pode dar qualquer nome que quiser).
 
 ```{r}
-url_base <- "http://www.al.sp.gov.br/alesp/pesquisa-proposicoes/?direction=inicio&lastPage=0&currentPage=0&act=detalhe&idDocumento=&rowsPerPage=10&currentPageDetalhe=1&tpDocumento=&method=search&text=merenda&natureId=&legislativeNumber=&legislativeYear=&natureIdMainDoc=&anoDeExercicio=&legislativeNumberMainDoc=&legislativeYearMainDoc=&strInitialDate=&strFinalDate=&author=&supporter=&politicalPartyId=&tipoDocumento=&stageId=&strVotedInitialDate=&strVotedFinalDate=#"
+url_base <- "http://www.al.sp.gov.br/alesp/pesquisa-proposicoes/?direction=acima&lastPage=75&currentPage=1&act=detalhe&idDocumento=&rowsPerPage=10&currentPageDetalhe=1&tpDocumento=&method=search&text=merenda&natureId=&legislativeNumber=&legislativeYear=&natureIdMainDoc=&anoDeExercicio=&legislativeNumberMainDoc=&legislativeYearMainDoc=&strInitialDate=&strFinalDate=&author=&supporter=&politicalPartyId=&tipoDocumento=&stageId=&strVotedInitialDate=&strVotedFinalDate="
 ```
 
 Há muitas informações nesse link, basicamente todos os campos que poderiam ter sido especificados na busca são apresentados no endereço. Como preenchemos apenas com o termo ("merenda"), esse será o único parametro definido na URL ("text=merenda").
 
-Podemos ver que há muitas páginas de resultado para a palavra-chave que utilizamos. Nosso desafio é conseguir passar de forma eficiente por elas. Para isso, usaremos uma função essencial na programação, o "for loop".
+Também podemos observar que a pesquisa retornou 75 páginas ("lastPage=75") e que a página atual é a de número 1 ("currentPage=1") -- página 1 da pesquisa é numerada como 0 nesta ferramenta de busca, mas o padrão muda de página para página.
+
+Podemos ver que há muitas páginas de resultado para a palavra-chave que utilizamos. Nosso desafio é conseguir "passar" de forma eficiente por elas, ou seja, acessar os 75 links e "raspar" o seu conteúdo. Para isso, usaremos uma função essencial na programação, o "for loop".
 
 Loops são processos iterativos e são extremamente úteis para instruir o computador a repetir uma tarefa por um número finito de vezes. Por exemplo, vamos começar "imprimindo" na tela os números de 1 a 9:
 
@@ -63,21 +69,22 @@ Tente agora construir um exemplo de loop que imprima na tela os números de 3 a 
 
 ## Substituição com gsub
 
-Ótimo! Já temos alguma intuição sobre como loops funcionam. Será com eles que faremos a movimentação das páginas.
-O que nos falta é uma função que nos permita juntar o texto básico do link ("url_base") com os números das páginas.
+Ótimo! Já temos alguma intuição sobre como loops funcionam. Podemos agora fazer "passar" pelas páginas que contêm a informação que nos interessa. Temos que escrever uma pequena instrução que indique ao programa que queremos passar pelas páginas de 1 a 75, substituindo apenas o número da página atual -- "currentPage" -- no endereço url que guardamos no objeto url_base.
+
+Nos falta, porém, uma função que nos permita substituir no texto básico do url ("url_base") os números das páginas.
 Há mais de uma opção para realizar essa tarefa, mas aqui usaremos a função "gsub". 
 
-Com a função "gsub" podemos substituir em objeto de texto por outro, de acordo com o critério especificado.
-Os argumentos (o que vai entre os parenteses) da função é, em ordem, o termo a igualar, o que quero que coloque no lugar, onde quero que coloque.
+Com a função "gsub" podemos substituir um pedaço de um objeto de texto por outro, de acordo com o critério especificado.
+Os argumentos (o que vai entre os parenteses) da função são, em ordem, o termo a ser substituído, o termo quero colocar no lugar e o objeto no qual a substituição ocorrerá.
 
 Na prática, ela funciona da seguinte forma:
 
 ```{r}
 o_que_procuro_para_susbtituir <- "palavra"
 o_que_quero_substituir_por <- "batata"
-onde_quero_substituir <- "quero substituir essa palavra"
+meu_texto <- "quero substituir essa palavra"
 
-texto_final <- gsub(o_que_procuro_para_susbtituir, o_que_quero_substituir_por, onde_quero_substituir)
+texto_final <- gsub(o_que_procuro_para_susbtituir, o_que_quero_substituir_por, meu_texto)
 
 print(texto_final)
 ```
