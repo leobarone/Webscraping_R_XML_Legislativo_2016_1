@@ -24,15 +24,32 @@ Por exemplo, se quisermos organizar a informação sobre um indivíduo que assum
     <sexo> Masculino </sexo>
     <cargos>
       <cargo> 
+        <cargo> prefeito </cargo> 
+        <partido> PAN </partido>
+        <ano_ini> 2005 </ano_ini>
+        <ano_fim> 2008 </ano_fim>
+      </cargo>
+      <cargo> 
         <cargo> deputado federal </cargo> 
         <partido> PAN </partido>
         <ano_ini> 2003 </ano_ini>
-        <ano_fim> 2006 </ano_fim>
+        <ano_fim> 2004 </ano_fim>
+       </cargo>
+       <cargo> 
+        <cargo> deputado estadual </cargo> 
+        <partido> PAN </partido>
+        <ano_ini> 1998 </ano_ini>
+        <ano_fim> 2002 </ano_fim>
        </cargo>
       <cargos>
   </politicos>
 </politicos>
 ```
+
+Exercício (difícil): se tivessemos que representar estes dados em um banco de dados (data frame), como seria? Quantas linhas teria? Quantas colunas teria?
+
+Abra agora a página inicial da ALESP. 
+
 
 
 ```{r}
