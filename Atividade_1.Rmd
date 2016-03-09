@@ -69,9 +69,9 @@ Tente agora construir um exemplo de loop que imprima na tela os números de 3 a 
 
 ## Substituição com gsub
 
-Ótimo! Já temos alguma intuição sobre como loops funcionam. Podemos agora fazer "passar" pelas páginas que contêm a informação que nos interessa. Temos que escrever uma pequena instrução que indique ao programa que queremos passar pelas páginas de 1 a 75, substituindo apenas o número da página atual -- "currentPage" -- no endereço url que guardamos no objeto url_base.
+Ótimo! Já temos alguma intuição sobre como loops funcionam. Podemos agora fazer "passar" pelas páginas que contêm a informação que nos interessa. Temos que escrever uma pequena instrução que indique ao programa que queremos passar pelas páginas de 1 a 75, substituindo apenas o número da página atual -- "currentPage" -- no endereço URL que guardamos no objeto url_base.
 
-Nos falta, porém, uma função que nos permita substituir no texto básico do url ("url_base") os números das páginas.
+Nos falta, porém, uma função que nos permita substituir no texto básico do URL ("url_base") os números das páginas.
 Há mais de uma opção para realizar essa tarefa, mas aqui usaremos a função "gsub". 
 
 Com a função "gsub" podemos substituir um pedaço de um objeto de texto por outro, de acordo com o critério especificado.
@@ -91,31 +91,35 @@ print(texto_final)
 
 Agora que sabemos substituir partes de textos e fazer loops, podemos mudar o número da página do nosso endereço de pesquisa.
 
-Vamos pegar o nosso url_base e achar onde que o número da página fica. Experimente passar para a página seguinte da busca e vamos ver o que muda no link. 
+Descobrimos que na URL, o que varia ao clicar na próxima página é o "currentPage=1" que vai para "currentPage=2". Nesse caso é o "1" como segunda página e o "2" como terceira e assim por diante, mas isso não é uma regra.
+
+Vamos agora substituir na URL da página 2 da nossa busca o número por algo que "guarde o lugar" do número de página. Esse algo é um "placeholder" e pode ser qualquer texto. No caso, usaremos "NUMPAG". Veja abaixo onde "NUMPAG" foi introduzido no endereço URL. 
+
+Obs: Lembremos que ao colocar na URL, não devemos usar as aspas mas elas se mantém ao escrever a função, pois queremos dizer que procuramos a palavra "NUM_PAG" e não o objeto chamado NUMPAG.
 
 ```{r}
-url_base <- "http://www.al.sp.gov.br/alesp/pesquisa-proposicoes/?direction=inicio&lastPage=0&currentPage=0&act=detalhe&idDocumento=&rowsPerPage=10&currentPageDetalhe=1&tpDocumento=&method=search&text=merenda&natureId=&legislativeNumber=&legislativeYear=&natureIdMainDoc=&anoDeExercicio=&legislativeNumberMainDoc=&legislativeYearMainDoc=&strInitialDate=&strFinalDate=&author=&supporter=&politicalPartyId=&tipoDocumento=&stageId=&strVotedInitialDate=&strVotedFinalDate=#"
+url_base <- "http://www.al.sp.gov.br/alesp/pesquisa-proposicoes/?direction=acima&lastPage=75&currentPage=NUMPAG&act=detalhe&idDocumento=&rowsPerPage=10&currentPageDetalhe=1&tpDocumento=&method=search&text=merenda&natureId=&legislativeNumber=&legislativeYear=&natureIdMainDoc=&anoDeExercicio=&legislativeNumberMainDoc=&legislativeYearMainDoc=&strInitialDate=&strFinalDate=&author=&supporter=&politicalPartyId=&tipoDocumento=&stageId=&strVotedInitialDate=&strVotedFinalDate="
 ```
 
-Descobrimos que na URL, o que varia ao clicar na próxima página é o "currentPage=0" que vai para "currentPage=1". Nesse caso é o "0" como primeira página e o "1" como segunda e assim por diante, mas isso não é uma regra. A busca podia ter iniciado no "1" e a página dois ser "2".
-
-Já sabemos onde a página muda, então podemos escrever o código que diz para substituir essa parte da URL pelo número que queremos. Vamos testar primeiro com uma página apenas. Para isso, achamos o lugar que está o "currentPage=0" e substituimos na url_base por algum termo que provavelmente não apareceria em um endereço de internet como esse.
-
-No caso, usaremos "NUM_PAG". Lembrar que ao colocar na URL, não devemos usar as aspas mas elas se mantém ao escrever a função, pois queremos dizer que procuramos a palavra "NUM_PAG" e não o objeto chamado NUM_PAG.
-
+Por exemplo, se quisermos gerar o link da página 6, podemos escrever:
 ```{r}
-url_base <- "http://www.al.sp.gov.br/alesp/pesquisa-proposicoes/?direction=inicio&lastPage=0&currentPage=NUM_PAG&act=detalhe&idDocumento=&rowsPerPage=10&currentPageDetalhe=1&tpDocumento=&method=search&text=merenda&natureId=&legislativeNumber=&legislativeYear=&natureIdMainDoc=&anoDeExercicio=&legislativeNumberMainDoc=&legislativeYearMainDoc=&strInitialDate=&strFinalDate=&author=&supporter=&politicalPartyId=&tipoDocumento=&stageId=&strVotedInitialDate=&strVotedFinalDate=#"
-i = 6
-url <- gsub("NUM_PAG", i, url_base)
+url <- gsub("NUMPAG", "6", url_base)
 print(url)
 ```
 
-Agora que temos o código substituindo funcionando, vamos implementar o loop para que as URLs das páginas sejam coletadas automaticamente:
+Ou, em vez de usar um número diretamente na substituição, podemos usar uma variável que represente um número -- por exemplo a variável i, que já usamos no loop anteriormente.
 
 ```{r}
-url_base <- "http://www.al.sp.gov.br/alesp/pesquisa-proposicoes/?direction=inicio&lastPage=0&currentPage=NUM_PAG&act=detalhe&idDocumento=&rowsPerPage=10&currentPageDetalhe=1&tpDocumento=&method=search&text=merenda&natureId=&legislativeNumber=&legislativeYear=&natureIdMainDoc=&anoDeExercicio=&legislativeNumberMainDoc=&legislativeYearMainDoc=&strInitialDate=&strFinalDate=&author=&supporter=&politicalPartyId=&tipoDocumento=&stageId=&strVotedInitialDate=&strVotedFinalDate=#"
-for( i in 0:5){
-url <- gsub("NUM_PAG", i, url_base)
+i = 6
+url <- gsub("NUMPAG", i, url_base)
+print(url)
+```
+Agora que temos o código substituindo funcionando, vamos implementar o loop para que as URLs das páginas sejam geradas automaticamente. Por exemplo, se quisermos "imprimir" na tela as páginas 0 a 5, podemos usar o seguinte código:
+
+```{r}
+url_base <- "http://www.al.sp.gov.br/alesp/pesquisa-proposicoes/?direction=acima&lastPage=75&currentPage=NUMPAG&act=detalhe&idDocumento=&rowsPerPage=10&currentPageDetalhe=1&tpDocumento=&method=search&text=merenda&natureId=&legislativeNumber=&legislativeYear=&natureIdMainDoc=&anoDeExercicio=&legislativeNumberMainDoc=&legislativeYearMainDoc=&strInitialDate=&strFinalDate=&author=&supporter=&politicalPartyId=&tipoDocumento=&stageId=&strVotedInitialDate=&strVotedFinalDate="
+for(i in 0:5){
+url <- gsub("NUMPAG", i, url_base)
 print(url)
 }
 ```
@@ -124,17 +128,20 @@ print(url)
 
 Muito mais simples do que parece, não? Mas veja bem, até agora tudo que fizemos foi produzir um texto que, propositalmente, é igual ao endereço das páginas cujo conteúdo nos interessa. Porém, ainda não acessamos o seu conteúdo. Precisamos, agora, de funções que façam algo semelhante a um navegador de internet, ou seja, que se comuniquem com o servidor da página e receba o seu conteúdo.
 
-Por enquanto, vamos usar apenas a função "readHTMLTable", contida na biblioteca "XML" (lembra que chamamos esta biblioteca lá no começo da atividade?). Esta função serve bem ao nosso caso: ela recebe uma URL como argumento e captura todas as tabelas da url, escritas em HTML, e retorna uma lista contendo as tabelas. 
-Vamos ver como ela funciona para a página 1 contendo tabelas com os resultados em que aparecem o nosso termo pesquisado:
+Por enquanto, vamos usar apenas a função "readHTMLTable", contida na biblioteca "XML" (lembra que chamamos esta biblioteca lá no começo da atividade?). Esta função serve bem ao nosso caso: ela recebe uma URL como argumento e captura todas as tabelas da url, escritas em HTML, e retorna uma lista contendo as tabelas.
+
+Vamos ver como ela funciona para a página 2 (ou seja, currentPage=1) contendo tabelas com os resultados em que aparecem o nosso termo pesquisado:
 
 ```{r}
-url_base <- "http://www.al.sp.gov.br/alesp/pesquisa-proposicoes/?direction=inicio&lastPage=0&currentPage=NUM_PAG&act=detalhe&idDocumento=&rowsPerPage=10&currentPageDetalhe=1&tpDocumento=&method=search&text=merenda&natureId=&legislativeNumber=&legislativeYear=&natureIdMainDoc=&anoDeExercicio=&legislativeNumberMainDoc=&legislativeYearMainDoc=&strInitialDate=&strFinalDate=&author=&supporter=&politicalPartyId=&tipoDocumento=&stageId=&strVotedInitialDate=&strVotedFinalDate=#"
+url_base <- "http://www.al.sp.gov.br/alesp/pesquisa-proposicoes/?direction=acima&lastPage=75&currentPage=NUMPAG&act=detalhe&idDocumento=&rowsPerPage=10&currentPageDetalhe=1&tpDocumento=&method=search&text=merenda&natureId=&legislativeNumber=&legislativeYear=&natureIdMainDoc=&anoDeExercicio=&legislativeNumberMainDoc=&legislativeYearMainDoc=&strInitialDate=&strFinalDate=&author=&supporter=&politicalPartyId=&tipoDocumento=&stageId=&strVotedInitialDate=&strVotedFinalDate="ate=#"
 i <- 1
 url <- gsub("NUM_PAG", i, url_base)
 tabela <- readHTMLTable(url)
 print(tabela)
 }
 ```
+
+Simples não? Geramos um endereço de URL e, após obteros o endereço, capturamos o conteúdo da página (no caso, só as tabelas) usando o link como argumento da função readHTMLTable. Antes de avançar, vamos falar um pouco sobre listas no R (pois o resultado da função readHTMLTable é uma lista).
 
 ## Listas
 
