@@ -5,11 +5,15 @@ date: "11-03-2016"
 output: pdf_document
 ---
 
-# XML e HTML
-
 Na primeira atividade da oficina não precisamos lidar com o conteúdo e a estrutura da página que estávamos capturando. Como o conteúdo que nos interessava estava em uma tabela, e o pacto "XML" contém uma função específica para captura de tabelas, gastamos apenas duas linhas de código para ter a informação capturada já organizada em um data frame.
 
 O que fazer, entretanto, com páginas que não tem tabelas? Como obter apenas as informações que nos interessam quando o conteúdo está "espalhado" pela página? Utilizaremos, como veremos abaixo, a estrutura do código HTML da própria página para selecionar apenas o que desejamos e construir data frames.
+
+Nosso objetivo nessa atividade será capturar uma única página usando a estrutura do código HTML da página. Já sabemos que, uma vez resolvida a captura de uma página, podemos usar "loop" para capturar quantas quisermos, desde que tenha uma estrutura semelhante.
+
+Antes disso, porém, precisamos falar um pouco sobre XML e HTML.
+
+# XML e HTML
 
 XML significa "Extensive Markup Language". Ou seja, é uma linguagem -- e, portanto, tem sintaxe -- e é uma linguagem com marcação. Marcação, neste caso, significa que todo o conteúdo de um documento XML está dentro de "marcas", também conhecidas como "tags". É uma linguagem extremamente útil para transporte de dados -- por exemplo, a Câmara dos Deputados utiliza XML em seu Web Serice para disponibilizar dados abertos (mas você não precisa saber disso se quiser usar o pacote de R bRasilLegis que nós desenvolvemos ;) -- disponível aqui: https://github.com/leobarone/bRasilLegis.
 
@@ -48,7 +52,146 @@ Por exemplo, se quisermos organizar a informação sobre um indivíduo que assum
 
 Exercício (difícil): se tivessemos que representar estes dados em um banco de dados (data frame), como seria? Quantas linhas teria? Quantas colunas teria?
 
-Abra agora a página inicial da ALESP. 
+Veja no link abaixo um exemplo de arquivo XML proveniente do Web Service da Câmara dos Deputados:
+
+http://www.camara.gov.br/SitCamaraWS/Deputados.asmx/ObterDetalhesDeputado?ideCadastro=141428&numLegislatura=
+
+Abra agora a página inicial da ALESP. Posicione o mouse em qualquer elemento da página e, com o botão direito, selecione "Inspecionar" (varia de navegador para navegador). Você verá o código HTML da página.
+
+Sem precisar observar muito, é fácil identificar que o código HTML da ALESP se assemelha ao nosso breve exemplo de arquivo XML. Não por acaso: HTML é um tipo de XML. Em outra palavras, toda página de internet está em um formato de dados conhecido e, como veremos a seguir, pode ser re-organizado facilmente.
+
+# Tags, nodes, atributos, valores e conteúdo na linguagem XML
+
+Todas as informações em um documento XML estão dispostas em "tags" (id, nome, etc são as tags do nosso exemplo). Um documento XML é um conjunto de "tags" que contém hierarquia. Um conjunto de "tags" hierarquicamente organizado é chamado de "node". Por exemplo, no arquivo XML da Câmara dos Deputados apresentado acima, cada "tag" político contêm diversos outras "tags" e formam "nodes", ou seja, pedaços do arquivo XML.
+
+Em geral, as "tags" vem em pares: uma de abertura e outra de fechamento. O que as diferencia é a barra invertida presente na "tag" de fechamento. Entre as "tags" de abertura e fechamento vemos o conteúdo da "tag", que pode, inclusive, ser outras "tags". Veja os exemplos abaixo:
+
+```{r}
+<minha_tag> Este é o conteúdo da tag </minha_tag>
+
+<tag_pai>
+  <tag_filha>
+  </tag_filha>
+</tag_pai>
+
+<tag_pai> Conteúdo da tag Pai
+  <tag_filha> Conteúdo da tag Filha
+  </tag_filha>
+</tag_pai>
+```
+
+Identação (espaços) nos ajudam a ver a hierarquia entre as tags, mas não são obrigatórios. Também as quebras de linha são opcionais.
+
+Além do conteúdo e do nome da "tag", é extremamente comum encontrarmos "atributos" nas tags em bancos de dados e, sobretudo, em códigos HTML. Atributos ajudam a especificar a "tag", ou seja, identificam qual é o seu uso ou carregam quaisquer outras informações referentes. Voltando ao exemplo fictício acima, poderíamos transformar a informação do cargo, que hoje é uma "tag" cargo dentro de outra "tag" cargo (horrível, não?) em atributo.
+
+Em vez de:
+```{r}
+<politicos>
+  <politico>
+    <id> 33333 </id>
+    <nome> Fulano Deputado da Silva </nome>
+    <data_nascimento> 3/3/66 </data_nascimento>
+    <sexo> Masculino </sexo>
+    <cargos>
+      <cargo> 
+        <cargo> prefeito </cargo> 
+        <partido> PAN </partido>
+        <ano_ini> 2005 </ano_ini>
+        <ano_fim> 2008 </ano_fim>
+      </cargo>
+      <cargo> 
+        <cargo> deputado federal </cargo> 
+        <partido> PAN </partido>
+        <ano_ini> 2003 </ano_ini>
+        <ano_fim> 2004 </ano_fim>
+       </cargo>
+       <cargo> 
+        <cargo> deputado estadual </cargo> 
+        <partido> PRONA </partido>
+        <ano_ini> 1998 </ano_ini>
+        <ano_fim> 2002 </ano_fim>
+       </cargo>
+      <cargos>
+  </politicos>
+</politicos>
+```
+Teríamos:
+```{r}
+<politicos>
+  <politico>
+    <id> 33333 </id>
+    <nome> Fulano Deputado da Silva </nome>
+    <data_nascimento> 3/3/66 </data_nascimento>
+    <sexo> Masculino </sexo>
+    <cargos>
+      <cargo tipo = 'prefeito'>
+        <partido> PAN </partido>
+        <ano_ini> 2005 </ano_ini>
+        <ano_fim> 2008 </ano_fim>
+      </cargo>
+      <cargo tipo = 'deputado federal'>
+        <partido> PAN </partido>
+        <ano_ini> 2003 </ano_ini>
+        <ano_fim> 2004 </ano_fim>
+       </cargo>
+      <cargo tipo = 'deputado estadual'>
+        <partido> PRONA </partido>
+        <ano_ini> 1998 </ano_ini>
+        <ano_fim> 2002 </ano_fim>
+       </cargo>
+      <cargos>
+  </politicos>
+</politicos>
+```
+
+Veja que agora a "tag" "cargo" tem um atributo -- "tipo" -- cujos valores sãp "prefeito", "deputado federal" ou "deputado estadual". Estranho, não? Para bancos de dados em formato XML, faz menos sentido o uso de atributos. Mas para páginas de internet, atributos são essenciais. Por exemplo, sempre que encontrarmos um hyperlink em uma página, contido sempre nas tags de nome "a", veremos apenas o "texto clicável" (conteúdo), pois o hyperlink estará, na verdade, no atributo "href".  Veja o exemplo
+
+```{r}
+<a href = 'http://www.al.sp.gov.br/'> Vá o site da ALESP </a>
+```
+
+Tente, no próprio site da ALESP, clicar com o botão direito em um hyperlink qualquer (por exemplo, "TV Assembléia SP") para observar algo semelhante ao exemplo acima. Adiante vamos ver como atributos são extremamente úteis ao nosso propósito.
+
+# Caminhos no XML e no HTML
+
+O fato de haver hierarquia nos códigos XML e HTML nos permite construir "caminhos", como se fossem caminhos de pastas em um computador, dentro do código.
+
+Por exemplo, o caminho das "tags" que contém a informação "nome" em nosso exemplo fictício é:
+
+"/politicos/politico/nome". 
+
+O caminho das "tags" que contém a informação "partido" em nosso exemplo fictício, por sua vez, é: 
+
+"/politicos/politico/cargos/cargo/partido".
+
+Seguindo tal caminho chegamos às três "tags" que contém a informação desejada.
+
+Simples, não? Mas há um problema: o que fazer quando chegamos a 3 informações diferentes (o indivíuo em nosso exemplo foi eleito duas vezes pelo PAN e uma pelo PRONA)? Há duas alternativa: a primeira, ficamos com as 3 informações armazenadas em um vetor, pois as 3 informações interessam. Isso ocorrerá com frequência.
+
+Mas se quisermos apenas uma das informações, por exemplo, a de quando o indivíduo foi eleito deputado estadual? Podemos usar os atributos e os valores dos atributos das "tag" para construir o caminho. Neste caso, teríamos como caminho: 
+
+"/politicos/politico/cargos/cargo[@tipo = 'deputado estadual']/partido"
+
+Guarde bem este exemplo: ele será nosso modelo quando tentarmos capturar páginas.
+
+Vamos supor que queremos poupar noso trabalho e sabemos que as únicas "tags" com nome "partido" no nosso documento são aquelas que nos interessam (isso nunca é verdade em um documento HTML). Podemos simplicar nosso caminho de forma a identificar "todas as 'tags' '', não importa em qual nível hierarquíco do documento". Neste caso, basta usar duas barras:
+
+"//partido"
+
+Ou "todas as 'tags' 'partido' que sejam descendentes de 'politico', não importa em qual nível hierarquíco do documento": 
+
+"/politicos/politico//partido"
+
+Ou ainda "todas as 'tags' 'partido' que sejam descendentes de quaisquer 'tag' 'politico', não importa em qual nível hierarquíco do documento para qualquer uma das duas": 
+
+"//politico//partido"
+
+Ou "todas as 'tags' filhas de qualquer 'tag' 'cargo'" (usa-se um asterisco para indicar 'todas'):
+
+"//cargo/*"
+
+Observe o potencial dos "caminhos" para a captura de dados: podemos localizar em qualquer documento XML ou HTML uma informação usando a própria estrutura do documento. Não precisamos organzinar o documento todo, basta extrair cirurgicamente o que queremos -- o que é a regra na raspagem de páginas de internet.
+
 
 
 
