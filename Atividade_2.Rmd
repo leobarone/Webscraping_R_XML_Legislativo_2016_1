@@ -259,31 +259,44 @@ Note que a classe do resultado da aplicação de uma das quatro funções não �
 class(pagina)
 ```
 
-
-A mais importante dessas funções é "getNodeSet". Este função é o nosso "localizador": ela retorna todos os nodes de um documento xml que atendem a determinado critério. Para RSSs, buscando por "//channel//item" obtemos diretamente todos os nodes que representam as notícias do feed.
-
-```{r}
-node.set.rss = getNodeSet(pagina.rss.xml,"//channel//item")
-class(node.set.rss)
-```
-
-"XMLNodeSet", ou seja, um conjunto com nodes de XML é o nosso resultado. Em um objeto deste tipo -- que está estruturado como XML -- podemos aplicar a função "xmlToDataFrame", para converter um "XMLNodeSet" em um data frame, como sugere o nome:
-
-```{r}
-rss.folha <- xmlToDataFrame(node.set.rss)
-class(rss.folha)
-dim(rss.folha)
-names(rss.folha)
-```
-
 # Navegando e conhecendo um documento HTML com o a biblioteca XML 
 
-Até o momento, trabalhamos nos com vetores, loops e funções de texto que nos permitem explorar documentos de texto, selecionar suas linhas, palavras, recortar, combinar, etc. Nesta atividades, examinaremos as funções que interessam para analisar e navegar documentos em HTML transformando-o em um documento do tipo XML e usando os nodes para nos guiar.
+Vamos agora aprender a "navegar" um objeto XML dentro do R e extrair dele apenas o conteúdo que nos interessa.
 
-Havíamos visto que há 4 funções apropriadas para transformar um documento de HTML em XML em um objeto para o qual as demais funções da biblioteca XML, que veremos adiante, são aplicáveis. Neste exemplo vamos trabalhar com a busca de notícias do portal do jornal "Folha de São Paulo". Em primeiro lugar, vamos fazer uma busca qualquer (por exemplo "Marco Civil da Internet" e guardar o link (lembre-se de ir para a página 2 e voltar para obter o link completo):
+Basicamente, trabalharemos nas atividades com um conjunto limitado funções: "getNodeSet", que extrai um pedaço (nodes) de um documento XML; "xmlValues", que extrai de um node o seu conteúdo; e "xmlGetAttr", que extrai os valores dos atributos específicados.
+
+Vamos trabalhar com a ferramenta de busca da página inicial da ALESP, em particular com a página 2 de uma busca qualquer.
+
+Em primeiro lugar, criamos um objeto com o endereço da página:
 
 ```{r}
-url <- "http://search.folha.com.br/search?q=marco%20civil%20da%20internet&site=online&sr=1"
+url <- "http://www.al.sp.gov.br/alesp/busca/?q=merenda&page=2"
+```
+
+A seguir, capturamos seu código HTML com a função readLines:
+
+```{r}
+pagina <- readLines(url)
+```
+
+"Parseamos" o objeto de texto para transformá-lo em objeto XML:
+
+```{r}
+pagina <- htmlParse(pagina)
+```
+
+E, finalmente, usamos uma função nova chamada "xmlRoot" para eliminar quaisquer conteúdos (normalmente "sujeira") que estejam foram da tag de maior nível hierárquico no documento (o que é necessário com frequência em páginas de internet e é mais raro em documentos XML):
+
+```{r}
+pagina <- xmlRoot(pagina)
+```
+
+Pronto. Temos o conteúdo da página como documento XML pronto para ser "raspado".
+
+Vamos começar usando a função getNodeSet
+
+```{r}
+nodes_link <- getNodeSet(pagina, "//ul[@class='lista_navegacao']/li/a")
 ```
 
 Obs: na atividade seguinte vamos aprender a "postar" um texto na consulta de um site como o portal da Folha de São Paulo ou o Google.
