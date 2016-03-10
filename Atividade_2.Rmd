@@ -62,9 +62,9 @@ Sem precisar observar muito, é fácil identificar que o código HTML da ALESP s
 
 # Tags, nodes, atributos, valores e conteúdo na linguagem XML
 
-Todas as informações em um documento XML estão dispostas em "tags" (id, nome, etc são as tags do nosso exemplo). Um documento XML é um conjunto de "tags" que contém hierarquia. Um conjunto de "tags" hierarquicamente organizado é chamado de "node". Por exemplo, no arquivo XML da Câmara dos Deputados apresentado acima, cada "tag" político contêm diversos outras "tags" e formam "nodes", ou seja, pedaços do arquivo XML.
+Todas as informações em um documento XML estão dispostas em "tags" (id, nome, etc são as tags do nosso exemplo). Um documento XML é um conjunto de "tags" que contém hierarquia. Um conjunto de "tags" hierarquicamente organizado é chamado de "node". Por exemplo, no arquivo XML da Câmara dos Deputados apresentado acima, cada tag político contêm diversos outras "tags" e formam "nodes", ou seja, pedaços do arquivo XML.
 
-Em geral, as "tags" vem em pares: uma de abertura e outra de fechamento. O que as diferencia é a barra invertida presente na "tag" de fechamento. Entre as "tags" de abertura e fechamento vemos o conteúdo da "tag", que pode, inclusive, ser outras "tags". Veja os exemplos abaixo:
+Em geral, as "tags" vem em pares: uma de abertura e outra de fechamento. O que as diferencia é a barra invertida presente na tag de fechamento. Entre as "tags" de abertura e fechamento vemos o conteúdo da tag, que pode, inclusive, ser outras "tags". Veja os exemplos abaixo:
 
 ```{r}
 <minha_tag> Este é o conteúdo da tag </minha_tag>
@@ -82,7 +82,7 @@ Em geral, as "tags" vem em pares: uma de abertura e outra de fechamento. O que a
 
 Identação (espaços) nos ajudam a ver a hierarquia entre as tags, mas não são obrigatórios. Também as quebras de linha são opcionais.
 
-Além do conteúdo e do nome da "tag", é extremamente comum encontrarmos "atributos" nas tags em bancos de dados e, sobretudo, em códigos HTML. Atributos ajudam a especificar a "tag", ou seja, identificam qual é o seu uso ou carregam quaisquer outras informações referentes. Voltando ao exemplo fictício acima, poderíamos transformar a informação do cargo, que hoje é uma "tag" cargo dentro de outra "tag" cargo (horrível, não?) em atributo.
+Além do conteúdo e do nome da tag, é extremamente comum encontrarmos "atributos" nas tags em bancos de dados e, sobretudo, em códigos HTML. Atributos ajudam a especificar a tag, ou seja, identificam qual é o seu uso ou carregam quaisquer outras informações referentes. Voltando ao exemplo fictício acima, poderíamos transformar a informação do cargo, que hoje é uma tag cargo dentro de outra tag cargo (horrível, não?) em atributo.
 
 Em vez de:
 ```{r}
@@ -144,7 +144,7 @@ Teríamos:
 </politicos>
 ```
 
-Veja que agora a "tag" "cargo" tem um atributo -- "tipo" -- cujos valores sãp "prefeito", "deputado federal" ou "deputado estadual". Estranho, não? Para bancos de dados em formato XML, faz menos sentido o uso de atributos. Mas para páginas de internet, atributos são essenciais. Por exemplo, sempre que encontrarmos um hyperlink em uma página, contido sempre nas tags de nome "a", veremos apenas o "texto clicável" (conteúdo), pois o hyperlink estará, na verdade, no atributo "href".  Veja o exemplo
+Veja que agora a tag "cargo" tem um atributo -- "tipo" -- cujos valores sãp "prefeito", "deputado federal" ou "deputado estadual". Estranho, não? Para bancos de dados em formato XML, faz menos sentido o uso de atributos. Mas para páginas de internet, atributos são essenciais. Por exemplo, sempre que encontrarmos um hyperlink em uma página, contido sempre nas tags de nome "a", veremos apenas o "texto clicável" (conteúdo), pois o hyperlink estará, na verdade, no atributo "href".  Veja o exemplo
 
 ```{r}
 <a href = 'http://www.al.sp.gov.br/'> Vá o site da ALESP </a>
@@ -168,7 +168,7 @@ Seguindo tal caminho chegamos às três "tags" que contém a informação deseja
 
 Simples, não? Mas há um problema: o que fazer quando chegamos a 3 informações diferentes (o indivíuo em nosso exemplo foi eleito duas vezes pelo PAN e uma pelo PRONA)? Há duas alternativa: a primeira, ficamos com as 3 informações armazenadas em um vetor, pois as 3 informações interessam. Isso ocorrerá com frequência.
 
-Mas se quisermos apenas uma das informações, por exemplo, a de quando o indivíduo foi eleito deputado estadual? Podemos usar os atributos e os valores dos atributos das "tag" para construir o caminho. Neste caso, teríamos como caminho: 
+Mas se quisermos apenas uma das informações, por exemplo, a de quando o indivíduo foi eleito deputado estadual? Podemos usar os atributos e os valores dos atributos das tag para construir o caminho. Neste caso, teríamos como caminho: 
 
 "/politicos/politico/cargos/cargo[@tipo = 'deputado estadual']/partido"
 
@@ -192,9 +192,304 @@ Ou "todas as 'tags' filhas de qualquer 'tag' 'cargo'" (usa-se um asterisco para 
 
 Observe o potencial dos "caminhos" para a captura de dados: podemos localizar em qualquer documento XML ou HTML uma informação usando a própria estrutura do documento. Não precisamos organzinar o documento todo, basta extrair cirurgicamente o que queremos -- o que é a regra na raspagem de páginas de internet.
 
+# Links na página de busca da ALESP
 
+Vamos entrar na página principal da ALESP e fazer uma pesquisa simples na caixa de busca -- exatamente como faríamos em um jornal ou qualquer outro portal de internet (o processo seria o mesmo em buscadores como Google ou DuckDuckGo). Por exemplo, vamos pesquisa a palavra "merenda". A ferramenta de busca nos retorna uma lista de links que nos encaminharia para diversos documentos ou páginas da ALESP relacionadas ao termo buscado.
 
+Nosso objetivo é construir um vetor com os links dos resultados. Em qualquer página de internet, links estão dentro da tag "a". Uma maneira equivocada de encontrar todos os links da página usando "caminhos em XML" seria:
+
+"//a"
+
+Entretanto, há diversos outros elementos "clicáveis" na página além dos links que nos interessam -- por exemplo, as barras laterais, o banner com os logotipos, os links do mapa do portal, etc. Precisamos, portanto, especificar bem o "caminho" para que obtivéssemos apenas os links que nos interessam.
+
+Infelizmente não temos tempo para aprender aprofundadamente HTML, mas podemos usar lógica e intuição para obter caminhos unívocos. Neste exemplo, todos as "tags" "a" que nos interessam são filhas de alguma tag "li" (que é abreviação de "list" e indica um único elemento de uma lista). Podemos melhorar nosso caminho:
+
+"//li/a"
+
+A tag li, por sua vez, é filha da tag "ul" ("unordered list"), ou seja, é a tag que dá início à lista não ordenada formada pelos elementos "li". Novamente, melhoramos nosso caminho:
+
+"//ul/li/a"
+
+E se houver mais de uma "unordered list" na página? Observe que essa tag "ul" tem atributos: class="lista_navegacao". Algumas tem função para o usuário da página -- por exemplo, as tags "a" contém o atributo "href", que é o link do elemento "clicável". Mas, em geral, em uma página de internet os atributos não fazem nada além de identificar as tags para @ programador@. Diversos programas para construção de páginas criam atributos automaticamente. Por exemplo, se vocë fizer um blog em uma ferramenta qualquer de construção de blogs, sua página terá tags com atributos que você sequer escolheu.
+
+As tags mais comum em páginas HTML são: head, body, div, p, a, table, tbody, td, ul, ol, li, etc. Os atributos mais comuns são: class, id, href (para links), src (para imagens), etc. Em qualquer tutorial básico de HTML você aprenderá sobre elas. Novamente, não precisamos aprender nada sobre HTML e suas tags. Apenas precisamos compreender sua estrutura e saber navegar nela.
+
+Voltando ao nosso exemplo, se usarmos o atributo para especificar o "caminho" para os links teremos:
+
+"//ul[@class='lista_navegacao']/li/a"
+
+Poderíamos subir um nível hierárquico para melhorar o "caminho":
+
+"//div[@id='lista_resultado']/ul[@class='lista_navegacao']/li/a"
+
+Pegou o espírito?
+
+Vamos agora voltar ao R e aprender a usar os caminhos para criar objetos no R.
+
+# Capturando uma página e salvando-a em ".txt" para examinar a estrutura de tags de HTML
+
+Pode ser bastante útil, ao iniciarmos um programa de webscrapping, examinar a página a ser captura. É bastante simples: basta combinar as funções "readLines", para ler a página e armazená-la em um objeto, e depois "escrever", com a função "writeLines", o objeto em um arquivo de .txt.
 
 ```{r}
-#install.packages("XML")
+url <- "http://pretocafe.com.br/"
+page <- readLines(url)
+writeLines(page,"pretocafe.txt")
 ```
+
+# XML to Data Frame e RSS
+
+Nesta atividade vamos trabalhar intensamente com a biblioteca "XML", que utilizamos para capturar tabelas do Portal da Transparência. A grande vantagem de trabalharmos com o formato XML é que podemos usar as tags do página em HTML para nos orientarmos e buscarmos o conteúdo que interessa. Mais ainda, em alguns casos, a exemplo de RSSs de portais de notícias -- cuja estrutura de parte da página é um XML --, podemos usar a estrutura de tags para obter um data frame diretamente.
+
+```{r}
+library(XML)
+```
+
+Vamos começar capturando o RSS do jornal/portal "Folha de São Paulo", especificamente do Caderno "Poder". O primeiro passo é ler a página e armazená-la em um objeto com a função "readLines":
+
+```{r}
+url.rss <- "http://feeds.folha.uol.com.br/poder/rss091.xml"
+pagina.rss <- readLines(url.rss)
+```
+
+Obs: Para usuários de linux, ou outros sistemas operacionais, convém as vezes alterar o encoding da página usando o comando "iconv".
+
+```{r}
+pagina.rss <- iconv(pagina.rss, "LATIN1", "UTF-8")
+```
+
+A partir de agora, sempre que capturarmos uma página, seja em HTML ou em XML (como são os RSSs), vamos fazer um "parse". Há 4 funções no pacote "XML" -- "xmlParse", "htmlParse", "xmlTreeParse" e "htmlTreeParse" -- bastante semelhantes entre si e cujo propósito é capturar um conteudo em HTML ou XML e identificar sua estrutura, de forma a permitir a "navegação"
+por meio dos 'nodes' (ou tags). Para compreender as diferencas entre as funções, vale a pena usar o help -- dígite ?xmlParse na linha de comando.
+
+```{r}
+pagina.rss.xml <- xmlParse(pagina.rss)
+class(pagina.rss)
+```
+
+Note que a classe do resultado da aplicação de uma das quatro funções não é mais um texto, mas um conjunto de objetos de classes específicas ("XMLInternalDocument" e "XMLAbstractDocument", neste caso) e que podem ser exploradas com as funções do pacote XML que veremos nesta atividade.
+
+A mais importante dessas funções é "getNodeSet". Este função é o nosso "localizador": ela retorna todos os nodes de um documento xml que atendem a determinado critério. Para RSSs, buscando por "//channel//item" obtemos diretamente todos os nodes que representam as notícias do feed.
+
+```{r}
+node.set.rss = getNodeSet(pagina.rss.xml,"//channel//item")
+class(node.set.rss)
+```
+
+"XMLNodeSet", ou seja, um conjunto com nodes de XML é o nosso resultado. Em um objeto deste tipo -- que está estruturado como XML -- podemos aplicar a função "xmlToDataFrame", para converter um "XMLNodeSet" em um data frame, como sugere o nome:
+
+```{r}
+rss.folha <- xmlToDataFrame(node.set.rss)
+class(rss.folha)
+dim(rss.folha)
+names(rss.folha)
+```
+
+# Navegando e conhecendo um documento HTML com o a biblioteca XML 
+
+Até o momento, trabalhamos nos com vetores, loops e funções de texto que nos permitem explorar documentos de texto, selecionar suas linhas, palavras, recortar, combinar, etc. Nesta atividades, examinaremos as funções que interessam para analisar e navegar documentos em HTML transformando-o em um documento do tipo XML e usando os nodes para nos guiar.
+
+Havíamos visto que há 4 funções apropriadas para transformar um documento de HTML em XML em um objeto para o qual as demais funções da biblioteca XML, que veremos adiante, são aplicáveis. Neste exemplo vamos trabalhar com a busca de notícias do portal do jornal "Folha de São Paulo". Em primeiro lugar, vamos fazer uma busca qualquer (por exemplo "Marco Civil da Internet" e guardar o link (lembre-se de ir para a página 2 e voltar para obter o link completo):
+
+```{r}
+url <- "http://search.folha.com.br/search?q=marco%20civil%20da%20internet&site=online&sr=1"
+```
+
+Obs: na atividade seguinte vamos aprender a "postar" um texto na consulta de um site como o portal da Folha de São Paulo ou o Google.
+
+Vamos utilizar a função "readLines" para gravar o conteúdo da página em um objeto:
+
+```{r}
+pagina <- readLines(url)
+```
+
+E, a seguir, vamos utilizar a função "htmlParse", que é justamente uma das 4 funções da qual falamos acima, para transformar a página em um objeto XML:
+
+```{r}
+folha <- htmlParse(pagina)
+```
+
+Quando trabalhamos com páginas HTML é possível que haja um conteúdo, geralmente irrelevante, que está fora das tags da principais da página ("head" e "body"). Há um função que elimina rapidamente este conteúdo, chamada "xmlRoot". Está função identifica o node "de mais alto nivel" ("top-level"), ou seja, ao primeiro node da estrutura do documento e retira todo o conteúdo exterior a este node. Vamos utilizá-la:
+
+```{r}
+folha <- xmlRoot(folha)
+```
+
+A seguir, precisamos começar o trabalho mais árduo de situar onde, no documento HTML transformado em XML, está o conteúdo que nos interessa. Vamos observar várias funções que nos ajudam a devendar os nodes do XML. Para saber o qual é o nome node top-level (ou seja, o node que contém todos os demais em um documento) utilizamos a função "xmlName":
+
+```{r}
+xmlName(folha)
+```
+
+Para sabermos quantos nodes estão contidos no node top-level usamos a função "xmlSize":
+
+```{r}
+xmlSize(folha)
+```
+
+Neste caso, há 3 nodes dentro do node top-level "html". Podemos rapidamente ver os nomes usando colchetes exatamente da mesma forma que utilizamos quando trabalhamos com listas. Do ponto de vista de sua estrutura, os objetos resultantes do "parse" se assemelham a listas dentro de listas. Vamos observar o nome dos 3 nodes contidos dentro do node top-level
+
+```{r}
+xmlName(folha[[1]])
+xmlName(folha[[2]])
+xmlName(folha[[3]])
+```
+
+Como é comum em páginas de HTML, vemos que há um node "head" e um node "body", além do node "comment". Podemos fazer o mesmo para examinar o tamanho destes 3 nodes internos com a função "xmlSize":
+
+```{r}
+xmlSize(folha[[1]])
+xmlSize(folha[[2]])
+xmlSize(folha[[3]])
+```
+
+Estes nodes internos contém diversos outros, que, por sua vez, contém mais nodes e assim por diante. Uma maneira diferente de trabalhar com os nodes internos, sem usar a posição e aproveitando o conhecimento de páginas HTML, é utilizar o nome dos nodes dentro do colchete. Exemplo:
+
+```{r}
+xmlSize(folha[[3]])
+xmlSize(folha[["body"]])
+```
+
+Podemos extender a navegação de nodes incluindo mais colchetes e explorando os nodes internos:
+
+```{r}
+xmlName(folha[[3]][[24]][[1]])
+xmlName(folha[["body"]][["div"]][["text"]])
+```
+
+Podemos sempre armazenar os nodes 'menores' como objetos. O procedimento se assemelha ao de selecionar um pedaço do documento. Entretanto, não estamos preocupados com as linhas, mas com a estrutura de nodes. Isto equivale a criarmos um subconjunto do documento:
+
+```{r}
+text.node <-folha[["body"]][["div"]][["text"]]
+```
+
+Uma maneira inteligente de investigar um documento XML consiste na aplicação das funções "xmlName" e "xmlSize" para todos os nodes internos a um node principal. Há uma função no R que nos permite aplicar qualquer outra função a todos os elementos de um objeto XML de uma única vez: "xmlSApply". Tente compreender bem esta função antes de avançar. Ela se assemelha bastante às funções lappy (aplicável a listas) e sapply (aplicável a vetores).
+
+```{r}
+xmlSApply(folha, xmlName)
+xmlSApply(folha, xmlSize)
+xmlSApply(folha[["body"]], xmlName)
+xmlSApply(folha[["body"]], xmlSize)
+```
+
+Sem precisar necessariamente abrirmos e inspecionarmos o documento HTML original podemos conhecer bastante sobre sua estrutura e os nomes e tamanhos dos nodes internos.
+
+Explorar o documento no navegador, em um arquivo em .txt ou no R ajudam bastante. Mas queremos mesmo obter o conteúdo da página.
+
+Em um documento XML alguns nodes contém atributos e seus respectivos valores. Por exemplo: <elemento atributo = "valor">. Para obter o valor desses atributos, basta selecionarmos corretamente o elemento e aplicar a função "xmlAttrs" (observe que, se não houver atributo, a função retornará NULL). Por exemplo, o elemento "body" tem um atributo chamado "class" cujo valor é "service search":
+
+```{r}
+xmlAttrs(folha[["body"]])
+```
+
+Se conhecemos o nome do atributo cujo valor queremos capturar, podemos tambem utilizar a função xmlGetAttr, que, quando aplicada a um node, retorna o valor do atributo especificado:
+
+```{r}
+xmlGetAttr(folha[["body"]],"class")
+```
+
+As funções de captura de atributos também podem ser combinadas com "xmlSApply":
+
+```{r, results="hide"}
+# Resultados omitidos
+xmlSApply(folha[["body"]], xmlAttrs)
+```
+
+A essa altura do campeonato parece que o exame de um página HTML pode ser exageradamente trabalhoso. Com o que vimos, seria necessário percorrer e conhecer todos os nodes internos para chegar ao conteúdo (na verdade, ainda falta conhecer a função "xmlValue", que retorna o conteúdo dos nodes). Se quisessemos buscar de forma sistemática conteúdos em mais de uma página este processo poderia ser demasiadamente custoso.
+
+Note, porém. que os nodes formam um caminho, como se fossem "pastas" de um computador ou elementos de uma endereço na web. Por exemplo: //html//body//div//... As funções "getNodeSet", "xpathApply" e "xpathSApply" são adequadas a este propósito. Nós já utilizamos neste tutorial a função "getNodeSet" (para capturar o RSS da Folha). Vamos rever:
+
+```{r}
+url.rss <- "http://feeds.folha.uol.com.br/poder/rss091.xml"
+pagina.rss <- readLines(url.rss)
+pagina.rss <- iconv(pagina.rss, "LATIN1", "UTF-8")
+pagina.rss.xml <- xmlParse(pagina.rss)
+node.set.rss <- getNodeSet(pagina.rss.xml,"//channel//item")
+rss.folha <- xmlToDataFrame(node.set.rss)
+```
+
+As três funções são equivalentes (para diferenças entre as funções consultar o help). Vejamos abaixo:
+
+```{r, results="hide"}
+# Resultados omitidos
+
+# Assim, ... 
+#xmlName(folha[["html"]][["body"]])
+# ... é equivalente a
+getNodeSet(folha,"/html//body")
+# ... é também a
+xpathApply(folha, "/html//body")
+```
+
+Em resumo, podemos obter informações do documento apontando o "endereço" do node. E podemos ser o quão precisos quisermos. Mas e se quisermos buscar, por exemplo, qualquer node cujo elemento é "div" dentro do documento? Basta utilizar duas barras "//" na frente do elemento que define o node (escolhi "div" pois essa é a tag na qual está o conteúdo resumido da notícia). Exemplo:
+
+```{r, results="hide"}
+# Resultados omitidos
+getNodeSet(folha,"//div")
+```
+
+É importante notar que, quando estamos capturando dados na internet, essas funções que nos "direcionam" aos nodes que contêm a informação de interesse são particularmente importantes. Em geral, capturamos muito mais informações do que nos interessa e essas funções viabilizam a seleção do que é essencial.
+
+Por exemplo, ao capturarmos todos os nodes com "div", recebemos uma lista com muito mais links do que precisamos. Podemos, então, especificar ainda mais o que queremos dentre os vários nodes que contém a tag "div", por exemplo, buscando apenas aqueles que contém o atributo "class" igual ao valor "content":
+
+```{r}
+conteudo <- getNodeSet(folha,"//div[@class='content']")
+```
+
+Veja que ao especificarmos o atributo e seu valor, recebemos apenas os nodes com os conteúdos que efetivamente nos interessam. Vamos salvar o resultado no objeto "conteúdo". Aplicando a função "xmlValue" (em conjunto com "xmlSApply"), temos um vetor de tamanho 26, com o conteúdo das 25 notícias da página mais algo que não nos interessa na primeira posição. Facilmente excluímos a primeira posição e ficamos apenas com os conteúdos:
+
+```{r}
+conteudo <- xmlSApply(conteudo, xmlValue)[2:length(conteudo)]
+print(conteudo)
+```
+
+Podemos repetir o processo para obter também o título da matéria e o link. O link, em particular, nos interessa bastante para avançarmos à próxima atividade, na qual capturaremos o texto das matérias e não só o conteúdo resumido do site de busca. Primeiro os títulos:
+
+```{r}
+titulos <- getNodeSet(folha,"//h3[@class='search-results-title']/a")
+titulos <- xmlSApply(titulos, xmlValue)
+print(titulos)
+```
+
+Agora os links:
+
+```{r}
+links <- getNodeSet(folha,"//h3[@class='search-results-title']/a")
+links <- xmlSApply(links, xmlAttrs)
+print(links)
+```
+
+Podemos rapidamente construir um data frame com os 3 vetores:
+
+```{r}
+busca.folha <- data.frame(titulos, links, conteudo, stringsAsFactors = F)
+```
+
+Em minha busca por "Marco Civil da Internet", na data do curso, havia 827 notícias sobre o tema, ou seja 33 páginas com 25 notícias e mais uma com apenas 2.
+
+```{r}
+827/25; 827%%25
+```
+
+Podemos usar o que criamos até agora para caputrar todas as notícias. (Obs: note que os links terminam com o número da primeira mantéria e não o número da página da busca. Por esta razão, vamos criar uma fórmula para "i" de uma forma que o loop avance de 25 em 25 a partir do 1 e até 826):
+
+```{r}
+url.folha <- "http://search.folha.com.br/search?q=marco%20civil%20da%20internet&site=online&sr="
+dados <- data.frame()
+for (i in 1:34){
+  i = (i - 1) * 25 + 1
+  print(i)
+  url <- paste(url.folha, i, sep = "")
+  pagina <- readLines(url)
+  folha <- htmlParse(pagina)
+  folha <- xmlRoot(folha)
+  conteudo <- getNodeSet(folha,"//div[@class='content']")
+  conteudo <- xmlSApply(conteudo, xmlValue)[2:length(conteudo)]
+  titulos <- getNodeSet(folha,"//h3[@class='search-results-title']/a")
+  titulos <- xmlSApply(titulos, xmlValue)
+  links <- getNodeSet(folha,"//h3[@class='search-results-title']/a")
+  links <- xmlSApply(links, xmlAttrs)
+  busca.folha <- data.frame(titulos, links, conteudo, stringsAsFactors = F)
+  dados <- rbind(dados, busca.folha)
+}
+```
+
+Veja que incrível o que acabamos de criar: um banco de dados com os títulos, links e todas os resumos das matérias da Folha de São Paulo sobre o Marco Civil da Internet. Vamos seguir na atividade 5 com a mesma atividade e aproveitar o que fizemos.
