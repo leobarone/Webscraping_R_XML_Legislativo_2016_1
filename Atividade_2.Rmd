@@ -226,46 +226,39 @@ Pegou o espírito?
 
 Vamos agora voltar ao R e aprender a usar os caminhos para criar objetos no R.
 
-# Capturando uma página e salvando-a em ".txt" para examinar a estrutura de tags de HTML
+# Capturar uma página e examinar sua estrutura
 
-Pode ser bastante útil, ao iniciarmos um programa de webscrapping, examinar a página a ser captura. É bastante simples: basta combinar as funções "readLines", para ler a página e armazená-la em um objeto, e depois "escrever", com a função "writeLines", o objeto em um arquivo de .txt.
+O primeiro passo na captura de uma página de internet é criar um objeto que contenha o código HTML da página. Para tanto, usamos a função "readLines" -- que é a mesma que utilizaríamos para qualquer documento de texto, Vamos usar a segunda página da busca pela palavra "merenda" na ALESP como exemplo:
 
 ```{r}
-url <- "http://pretocafe.com.br/"
-page <- readLines(url)
-writeLines(page,"pretocafe.txt")
+url <- "http://www.al.sp.gov.br/alesp/busca/?q=merenda&page=2"
+pagina <- readLines(url)
 ```
 
-# XML to Data Frame e RSS
-
-Nesta atividade vamos trabalhar intensamente com a biblioteca "XML", que utilizamos para capturar tabelas do Portal da Transparência. A grande vantagem de trabalharmos com o formato XML é que podemos usar as tags do página em HTML para nos orientarmos e buscarmos o conteúdo que interessa. Mais ainda, em alguns casos, a exemplo de RSSs de portais de notícias -- cuja estrutura de parte da página é um XML --, podemos usar a estrutura de tags para obter um data frame diretamente.
+Note que a estrutura do endereço URL é bastante simples: "q" é o parâmetro que informa o texto buscado e "page" o número da página. Nesta atividade vamos capturar apenas a página 2, mas você já aprendeu na atividade anterior como capturar todas as páginas usando loops.
 
 ```{r}
-library(XML)
+class(pagina)
 ```
 
-Vamos começar capturando o RSS do jornal/portal "Folha de São Paulo", especificamente do Caderno "Poder". O primeiro passo é ler a página e armazená-la em um objeto com a função "readLines":
+Observe (usando a função "class") que o objeto "pagina" que contém o HTML da página em análise é da classe "character", ou seja, é um texto. Após usar a função "readLines" o R sabe apenas que um texto foi capturado, mas é incapaz de identificar a estrutura do documento -- tags, atributos, valores e conteúdos. Precisamos, pois, informar ao R que se trata de um documento XML. O verbo em inglês para esta tarefa se chama "parse", cuja definição é "to resolve (as a sentence) into component parts of speech and describe them grammatically". Em outras palavras, "parsear" é identificar a estrutura sintática de um objeto e dividí-lo em seus componentes.
+
+Para páginas em HTML, usaremos a função "htmlParse":
 
 ```{r}
-url.rss <- "http://feeds.folha.uol.com.br/poder/rss091.xml"
-pagina.rss <- readLines(url.rss)
-```
-
-Obs: Para usuários de linux, ou outros sistemas operacionais, convém as vezes alterar o encoding da página usando o comando "iconv".
-
-```{r}
-pagina.rss <- iconv(pagina.rss, "LATIN1", "UTF-8")
+pagina <- htmlParse(pagina)
 ```
 
 A partir de agora, sempre que capturarmos uma página, seja em HTML ou em XML (como são os RSSs), vamos fazer um "parse". Há 4 funções no pacote "XML" -- "xmlParse", "htmlParse", "xmlTreeParse" e "htmlTreeParse" -- bastante semelhantes entre si e cujo propósito é capturar um conteudo em HTML ou XML e identificar sua estrutura, de forma a permitir a "navegação"
-por meio dos 'nodes' (ou tags). Para compreender as diferencas entre as funções, vale a pena usar o help -- dígite ?xmlParse na linha de comando.
+por meio dos nodes ou tags. Para compreender as diferencas entre as funções, vale a pena usar o help -- dígite ?xmlParse na linha de comando.
 
-```{r}
-pagina.rss.xml <- xmlParse(pagina.rss)
-class(pagina.rss)
-```
 
 Note que a classe do resultado da aplicação de uma das quatro funções não é mais um texto, mas um conjunto de objetos de classes específicas ("XMLInternalDocument" e "XMLAbstractDocument", neste caso) e que podem ser exploradas com as funções do pacote XML que veremos nesta atividade.
+
+```{r}
+class(pagina)
+```
+
 
 A mais importante dessas funções é "getNodeSet". Este função é o nosso "localizador": ela retorna todos os nodes de um documento xml que atendem a determinado critério. Para RSSs, buscando por "//channel//item" obtemos diretamente todos os nodes que representam as notícias do feed.
 
