@@ -45,7 +45,7 @@ Por exemplo, se quisermos organizar a informação sobre um indivíduo que assum
         <ano_ini> 1998 </ano_ini>
         <ano_fim> 2002 </ano_fim>
        </cargo>
-      <cargos>
+      </cargos>
   </politicos>
 </politicos>
 ```
@@ -111,7 +111,7 @@ Em vez de:
         <ano_ini> 1998 </ano_ini>
         <ano_fim> 2002 </ano_fim>
        </cargo>
-      <cargos>
+      </cargos>
   </politicos>
 </politicos>
 ```
@@ -139,12 +139,12 @@ Teríamos:
         <ano_ini> 1998 </ano_ini>
         <ano_fim> 2002 </ano_fim>
        </cargo>
-      <cargos>
+      </cargos>
   </politicos>
 </politicos>
 ```
 
-Veja que agora a tag "cargo" tem um atributo -- "tipo" -- cujos valores sãp "prefeito", "deputado federal" ou "deputado estadual". Estranho, não? Para bancos de dados em formato XML, faz menos sentido o uso de atributos. Mas para páginas de internet, atributos são essenciais. Por exemplo, sempre que encontrarmos um hyperlink em uma página, contido sempre nas tags de nome "a", veremos apenas o "texto clicável" (conteúdo), pois o hyperlink estará, na verdade, no atributo "href".  Veja o exemplo
+Veja que agora a tag "cargo" tem um atributo -- "tipo" -- cujos valores são "prefeito", "deputado federal" ou "deputado estadual". Estranho, não? Para bancos de dados em formato XML, faz menos sentido o uso de atributos. Mas para páginas de internet, atributos são essenciais. Por exemplo, sempre que encontrarmos um hyperlink em uma página, contido sempre nas tags de nome "a", veremos apenas o "texto clicável" (conteúdo), pois o hyperlink estará, na verdade, no atributo "href".  Veja o exemplo
 
 ```{r}
 <a href = 'http://www.al.sp.gov.br/'> Vá o site da ALESP </a>
