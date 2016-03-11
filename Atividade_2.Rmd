@@ -5,7 +5,7 @@ date: "11-03-2016"
 output: pdf_document
 ---
 
-Na primeira atividade da oficina não precisamos lidar com o conteúdo e a estrutura da página que estávamos capturando. Como o conteúdo que nos interessava estava em uma tabela, e o pacto "XML" contém uma função específica para captura de tabelas, gastamos apenas duas linhas de código para ter a informação capturada já organizada em um data frame.
+Na primeira atividade da oficina não precisamos lidar com o conteúdo e a estrutura da página que estávamos capturando. Como o conteúdo que nos interessava estava em uma tabela, e o pacote "XML" contém uma função específica para captura de tabelas, gastamos apenas duas linhas de código para ter a informação capturada já organizada em um data frame.
 
 O que fazer, entretanto, com páginas que não tem tabelas? Como obter apenas as informações que nos interessam quando o conteúdo está "espalhado" pela página? Utilizaremos, como veremos abaixo, a estrutura do código HTML da própria página para selecionar apenas o que desejamos e construir data frames.
 
