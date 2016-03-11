@@ -135,7 +135,7 @@ Vamos ver como ela funciona para a página 2 (ou seja, currentPage=1) contendo t
 ```{r}
 url_base <- "http://www.al.sp.gov.br/alesp/pesquisa-proposicoes/?direction=acima&lastPage=75&currentPage=NUMPAG&act=detalhe&idDocumento=&rowsPerPage=10&currentPageDetalhe=1&tpDocumento=&method=search&text=merenda&natureId=&legislativeNumber=&legislativeYear=&natureIdMainDoc=&anoDeExercicio=&legislativeNumberMainDoc=&legislativeYearMainDoc=&strInitialDate=&strFinalDate=&author=&supporter=&politicalPartyId=&tipoDocumento=&stageId=&strVotedInitialDate=&strVotedFinalDate="
 i <- 1
-url <- gsub("NUM_PAG", i, url_base)
+url <- gsub("NUMPAG", i, url_base)
 tabela <- readHTMLTable(url)
 print(tabela)
 ```
