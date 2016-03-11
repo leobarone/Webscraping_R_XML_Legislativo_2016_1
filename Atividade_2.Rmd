@@ -15,7 +15,7 @@ Antes disso, porém, precisamos falar um pouco sobre XML e HTML.
 
 # XML e HTML
 
-XML significa "Extensive Markup Language". Ou seja, é uma linguagem -- e, portanto, tem sintaxe -- e é uma linguagem com marcação. Marcação, neste caso, significa que todo o conteúdo de um documento XML está dentro de "marcas", também conhecidas como "tags". É uma linguagem extremamente útil para transporte de dados -- por exemplo, a Câmara dos Deputados utiliza XML em seu Web Serice para disponibilizar dados abertos (mas você não precisa saber disso se quiser usar o pacote de R bRasilLegis que nós desenvolvemos ;) -- disponível aqui: https://github.com/leobarone/bRasilLegis.
+XML significa "Extensive Markup Language". Ou seja, é uma linguagem -- e, portanto, tem sintaxe -- e é uma linguagem com marcação. Marcação, neste caso, significa que todo o conteúdo de um documento XML está dentro de "marcas", também conhecidas como "tags". É uma linguagem extremamente útil para transporte de dados -- por exemplo, a Câmara dos Deputados utiliza XML em seu Web Service para disponibilizar dados abertos (mas você não precisa saber disso se quiser usar o pacote de R bRasilLegis que nós desenvolvemos ;) -- disponível aqui: https://github.com/leobarone/bRasilLegis.
 
 Por exemplo, se quisermos organizar a informação sobre um indivíduo que assumiu diversos postos públicos, poderíamos organizar a informação da seguinte maneira:
 
@@ -174,7 +174,7 @@ Mas se quisermos apenas uma das informações, por exemplo, a de quando o indiv�
 
 Guarde bem este exemplo: ele será nosso modelo quando tentarmos capturar páginas.
 
-Vamos supor que queremos poupar noso trabalho e sabemos que as únicas "tags" com nome "partido" no nosso documento são aquelas que nos interessam (isso nunca é verdade em um documento HTML). Podemos simplicar nosso caminho de forma a identificar "todas as 'tags' '', não importa em qual nível hierarquíco do documento". Neste caso, basta usar duas barras:
+Vamos supor que queremos poupar nosso trabalho e sabemos que as únicas "tags" com nome "partido" no nosso documento são aquelas que nos interessam (isso nunca é verdade em um documento HTML). Podemos simplicar nosso caminho de forma a identificar "todas as 'tags' '', não importa em qual nível hierarquíco do documento". Neste caso, basta usar duas barras:
 
 "//partido"
 
@@ -249,7 +249,7 @@ Para páginas em HTML, usaremos a função "htmlParse":
 pagina <- htmlParse(pagina)
 ```
 
-A partir de agora, sempre que capturarmos uma página, seja em HTML ou em XML (como são os RSSs), vamos fazer um "parse". Há 4 funções no pacote "XML" -- "xmlParse", "htmlParse", "xmlTreeParse" e "htmlTreeParse" -- bastante semelhantes entre si e cujo propósito é capturar um conteudo em HTML ou XML e identificar sua estrutura, de forma a permitir a "navegação"
+A partir de agora, sempre que capturarmos uma página, seja em HTML ou em XML (como são os RSSs), vamos fazer um "parse". Há 4 funções no pacote "XML" -- "xmlParse", "htmlParse", "xmlTreeParse" e "htmlTreeParse" -- bastante semelhantes entre si e cujo propósito é capturar um conteúdo em HTML ou XML e identificar sua estrutura, de forma a permitir a "navegação"
 por meio dos nodes ou tags. Para compreender as diferencas entre as funções, vale a pena usar o help -- dígite ?xmlParse na linha de comando.
 
 
