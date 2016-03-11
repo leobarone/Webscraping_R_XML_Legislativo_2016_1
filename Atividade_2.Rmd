@@ -222,7 +222,7 @@ Poderíamos subir um nível hierárquico para melhorar o "caminho":
 
 "//div[@id='lista_resultado']/ul[@class='lista_navegacao']/li/a"
 
-Pegou o espírito?
+Pegou o espírito? Vamos agora dar o nome correto a este "caminho": xPath.
 
 Vamos agora voltar ao R e aprender a usar os caminhos para criar objetos no R.
 
@@ -293,209 +293,109 @@ pagina <- xmlRoot(pagina)
 
 Pronto. Temos o conteúdo da página como documento XML pronto para ser "raspado".
 
-Vamos começar usando a função getNodeSet
+Vamos começar usando a função "getNodeSet". Os nomes das funções do pacote XML são bastante literais. "getNodeSet" seleciona em um documento XML conjunto de nodes a partir de um "caminho". Por exemplo, podemos usar o xPath que criamos acima para pegar todos os links de resultado da busca:
 
 ```{r}
 nodes_link <- getNodeSet(pagina, "//ul[@class='lista_navegacao']/li/a")
+print(nodes_link)
 ```
 
-Obs: na atividade seguinte vamos aprender a "postar" um texto na consulta de um site como o portal da Folha de São Paulo ou o Google.
-
-Vamos utilizar a função "readLines" para gravar o conteúdo da página em um objeto:
+Note que o resultado é uma lista que contém em cada posição o primeiro "node set". Ele poderia, inclusive, ter tags filhas, além de seu conteúdo e atributos. Vamos examinar melhor o primeiro node. Precisamos usar dois colchetes para indicar a posição, pois se trata de uma lista e não de um vetor.
 
 ```{r}
-pagina <- readLines(url)
+print(nodes_link[[1]])
 ```
 
-E, a seguir, vamos utilizar a função "htmlParse", que é justamente uma das 4 funções da qual falamos acima, para transformar a página em um objeto XML:
+Trata-se de uma tag "a", com dois atributos, "class" e "href", sendo que o valor deste último é o link para o qual seríamos direcionados ao clicar no conteúdo apresentado na página, que é o texto "Lei no. 10.945, de 26/10/2001 ( Lei 10945/2001 )". Chegamos rapidamente à informação que desejávamos, mas ainda não temos ela de forma adequadamente organizada.
+
+O que nos interessa é extrair diretamente o valor dos atributos (se tiverem alguma informação valiosa) e o conteúdo. Vamos treinar com a primeira posição e extratir primeiro o conteúdo:
 
 ```{r}
-folha <- htmlParse(pagina)
+conteudo_1 <- xmlValue(nodes_link[[1]])
+print(conteudo_1)
 ```
 
-Quando trabalhamos com páginas HTML é possível que haja um conteúdo, geralmente irrelevante, que está fora das tags da principais da página ("head" e "body"). Há um função que elimina rapidamente este conteúdo, chamada "xmlRoot". Está função identifica o node "de mais alto nivel" ("top-level"), ou seja, ao primeiro node da estrutura do documento e retira todo o conteúdo exterior a este node. Vamos utilizá-la:
+E depois o valor do atributo "href":
 
 ```{r}
-folha <- xmlRoot(folha)
+atributo_1 <- xmlGetAttr(nodes_link[[1]], name = "href")
+print(atributo_1)
 ```
 
-A seguir, precisamos começar o trabalho mais árduo de situar onde, no documento HTML transformado em XML, está o conteúdo que nos interessa. Vamos observar várias funções que nos ajudam a devendar os nodes do XML. Para saber o qual é o nome node top-level (ou seja, o node que contém todos os demais em um documento) utilizamos a função "xmlName":
+Excelente, não? Se quisessemos apenas a informação do primeiro link resultante da busca, teríamos terminado nossa tarefa. Mas queremos os 10 links. Vamos ver duas maneiras ineficientes de construir um data frame que contenha uma variável com os conteúdos e a outra com os links. Tente decifrá-las:
+
+Sem usar o "for loop":
 
 ```{r}
-xmlName(folha)
+conteudo_1 <- xmlValue(nodes_link[[1]])
+conteudo_2 <- xmlValue(nodes_link[[2]])
+conteudo_3 <- xmlValue(nodes_link[[3]])
+conteudo_4 <- xmlValue(nodes_link[[4]])
+conteudo_5 <- xmlValue(nodes_link[[5]])
+conteudo_6 <- xmlValue(nodes_link[[6]])
+conteudo_7 <- xmlValue(nodes_link[[7]])
+conteudo_8 <- xmlValue(nodes_link[[8]])
+conteudo_9 <- xmlValue(nodes_link[[9]])
+conteudo_10 <- xmlValue(nodes_link[[10]])
+
+conteudos <- c(conteudo_1, conteudo_2, conteudo_3, conteudo_4, conteudo_5, conteudo_6, conteudo_7, conteudo_8, conteudo_9, conteudo_10)
+
+atributo_1 <- xmlGetAttr(nodes_link[[1]], name = "href")
+atributo_2 <- xmlGetAttr(nodes_link[[2]], name = "href")
+atributo_3 <- xmlGetAttr(nodes_link[[3]], name = "href")
+atributo_4 <- xmlGetAttr(nodes_link[[4]], name = "href")
+atributo_5 <- xmlGetAttr(nodes_link[[5]], name = "href")
+atributo_6 <- xmlGetAttr(nodes_link[[6]], name = "href")
+atributo_7 <- xmlGetAttr(nodes_link[[7]], name = "href")
+atributo_8 <- xmlGetAttr(nodes_link[[8]], name = "href")
+atributo_9 <- xmlGetAttr(nodes_link[[9]], name = "href")
+atributo_10 <- xmlGetAttr(nodes_link[[10]], name = "href")
+
+atributos <- c(atributo_1, atributo_2, atributo_3, atributo_4, atributo_5, atributo_6, atributo_7, atributo_8, atributo_9, atributo_10)
+
+dados <- data.frame(conteudos, atributos)
+head(dados)
 ```
 
-Para sabermos quantos nodes estão contidos no node top-level usamos a função "xmlSize":
+Usando for loops:
 
 ```{r}
-xmlSize(folha)
-```
-
-Neste caso, há 3 nodes dentro do node top-level "html". Podemos rapidamente ver os nomes usando colchetes exatamente da mesma forma que utilizamos quando trabalhamos com listas. Do ponto de vista de sua estrutura, os objetos resultantes do "parse" se assemelham a listas dentro de listas. Vamos observar o nome dos 3 nodes contidos dentro do node top-level
-
-```{r}
-xmlName(folha[[1]])
-xmlName(folha[[2]])
-xmlName(folha[[3]])
-```
-
-Como é comum em páginas de HTML, vemos que há um node "head" e um node "body", além do node "comment". Podemos fazer o mesmo para examinar o tamanho destes 3 nodes internos com a função "xmlSize":
-
-```{r}
-xmlSize(folha[[1]])
-xmlSize(folha[[2]])
-xmlSize(folha[[3]])
-```
-
-Estes nodes internos contém diversos outros, que, por sua vez, contém mais nodes e assim por diante. Uma maneira diferente de trabalhar com os nodes internos, sem usar a posição e aproveitando o conhecimento de páginas HTML, é utilizar o nome dos nodes dentro do colchete. Exemplo:
-
-```{r}
-xmlSize(folha[[3]])
-xmlSize(folha[["body"]])
-```
-
-Podemos extender a navegação de nodes incluindo mais colchetes e explorando os nodes internos:
-
-```{r}
-xmlName(folha[[3]][[24]][[1]])
-xmlName(folha[["body"]][["div"]][["text"]])
-```
-
-Podemos sempre armazenar os nodes 'menores' como objetos. O procedimento se assemelha ao de selecionar um pedaço do documento. Entretanto, não estamos preocupados com as linhas, mas com a estrutura de nodes. Isto equivale a criarmos um subconjunto do documento:
-
-```{r}
-text.node <-folha[["body"]][["div"]][["text"]]
-```
-
-Uma maneira inteligente de investigar um documento XML consiste na aplicação das funções "xmlName" e "xmlSize" para todos os nodes internos a um node principal. Há uma função no R que nos permite aplicar qualquer outra função a todos os elementos de um objeto XML de uma única vez: "xmlSApply". Tente compreender bem esta função antes de avançar. Ela se assemelha bastante às funções lappy (aplicável a listas) e sapply (aplicável a vetores).
-
-```{r}
-xmlSApply(folha, xmlName)
-xmlSApply(folha, xmlSize)
-xmlSApply(folha[["body"]], xmlName)
-xmlSApply(folha[["body"]], xmlSize)
-```
-
-Sem precisar necessariamente abrirmos e inspecionarmos o documento HTML original podemos conhecer bastante sobre sua estrutura e os nomes e tamanhos dos nodes internos.
-
-Explorar o documento no navegador, em um arquivo em .txt ou no R ajudam bastante. Mas queremos mesmo obter o conteúdo da página.
-
-Em um documento XML alguns nodes contém atributos e seus respectivos valores. Por exemplo: <elemento atributo = "valor">. Para obter o valor desses atributos, basta selecionarmos corretamente o elemento e aplicar a função "xmlAttrs" (observe que, se não houver atributo, a função retornará NULL). Por exemplo, o elemento "body" tem um atributo chamado "class" cujo valor é "service search":
-
-```{r}
-xmlAttrs(folha[["body"]])
-```
-
-Se conhecemos o nome do atributo cujo valor queremos capturar, podemos tambem utilizar a função xmlGetAttr, que, quando aplicada a um node, retorna o valor do atributo especificado:
-
-```{r}
-xmlGetAttr(folha[["body"]],"class")
-```
-
-As funções de captura de atributos também podem ser combinadas com "xmlSApply":
-
-```{r, results="hide"}
-# Resultados omitidos
-xmlSApply(folha[["body"]], xmlAttrs)
-```
-
-A essa altura do campeonato parece que o exame de um página HTML pode ser exageradamente trabalhoso. Com o que vimos, seria necessário percorrer e conhecer todos os nodes internos para chegar ao conteúdo (na verdade, ainda falta conhecer a função "xmlValue", que retorna o conteúdo dos nodes). Se quisessemos buscar de forma sistemática conteúdos em mais de uma página este processo poderia ser demasiadamente custoso.
-
-Note, porém. que os nodes formam um caminho, como se fossem "pastas" de um computador ou elementos de uma endereço na web. Por exemplo: //html//body//div//... As funções "getNodeSet", "xpathApply" e "xpathSApply" são adequadas a este propósito. Nós já utilizamos neste tutorial a função "getNodeSet" (para capturar o RSS da Folha). Vamos rever:
-
-```{r}
-url.rss <- "http://feeds.folha.uol.com.br/poder/rss091.xml"
-pagina.rss <- readLines(url.rss)
-pagina.rss <- iconv(pagina.rss, "LATIN1", "UTF-8")
-pagina.rss.xml <- xmlParse(pagina.rss)
-node.set.rss <- getNodeSet(pagina.rss.xml,"//channel//item")
-rss.folha <- xmlToDataFrame(node.set.rss)
-```
-
-As três funções são equivalentes (para diferenças entre as funções consultar o help). Vejamos abaixo:
-
-```{r, results="hide"}
-# Resultados omitidos
-
-# Assim, ... 
-#xmlName(folha[["html"]][["body"]])
-# ... é equivalente a
-getNodeSet(folha,"/html//body")
-# ... é também a
-xpathApply(folha, "/html//body")
-```
-
-Em resumo, podemos obter informações do documento apontando o "endereço" do node. E podemos ser o quão precisos quisermos. Mas e se quisermos buscar, por exemplo, qualquer node cujo elemento é "div" dentro do documento? Basta utilizar duas barras "//" na frente do elemento que define o node (escolhi "div" pois essa é a tag na qual está o conteúdo resumido da notícia). Exemplo:
-
-```{r, results="hide"}
-# Resultados omitidos
-getNodeSet(folha,"//div")
-```
-
-É importante notar que, quando estamos capturando dados na internet, essas funções que nos "direcionam" aos nodes que contêm a informação de interesse são particularmente importantes. Em geral, capturamos muito mais informações do que nos interessa e essas funções viabilizam a seleção do que é essencial.
-
-Por exemplo, ao capturarmos todos os nodes com "div", recebemos uma lista com muito mais links do que precisamos. Podemos, então, especificar ainda mais o que queremos dentre os vários nodes que contém a tag "div", por exemplo, buscando apenas aqueles que contém o atributo "class" igual ao valor "content":
-
-```{r}
-conteudo <- getNodeSet(folha,"//div[@class='content']")
-```
-
-Veja que ao especificarmos o atributo e seu valor, recebemos apenas os nodes com os conteúdos que efetivamente nos interessam. Vamos salvar o resultado no objeto "conteúdo". Aplicando a função "xmlValue" (em conjunto com "xmlSApply"), temos um vetor de tamanho 26, com o conteúdo das 25 notícias da página mais algo que não nos interessa na primeira posição. Facilmente excluímos a primeira posição e ficamos apenas com os conteúdos:
-
-```{r}
-conteudo <- xmlSApply(conteudo, xmlValue)[2:length(conteudo)]
-print(conteudo)
-```
-
-Podemos repetir o processo para obter também o título da matéria e o link. O link, em particular, nos interessa bastante para avançarmos à próxima atividade, na qual capturaremos o texto das matérias e não só o conteúdo resumido do site de busca. Primeiro os títulos:
-
-```{r}
-titulos <- getNodeSet(folha,"//h3[@class='search-results-title']/a")
-titulos <- xmlSApply(titulos, xmlValue)
-print(titulos)
-```
-
-Agora os links:
-
-```{r}
-links <- getNodeSet(folha,"//h3[@class='search-results-title']/a")
-links <- xmlSApply(links, xmlAttrs)
-print(links)
-```
-
-Podemos rapidamente construir um data frame com os 3 vetores:
-
-```{r}
-busca.folha <- data.frame(titulos, links, conteudo, stringsAsFactors = F)
-```
-
-Em minha busca por "Marco Civil da Internet", na data do curso, havia 827 notícias sobre o tema, ou seja 33 páginas com 25 notícias e mais uma com apenas 2.
-
-```{r}
-827/25; 827%%25
-```
-
-Podemos usar o que criamos até agora para caputrar todas as notícias. (Obs: note que os links terminam com o número da primeira mantéria e não o número da página da busca. Por esta razão, vamos criar uma fórmula para "i" de uma forma que o loop avance de 25 em 25 a partir do 1 e até 826):
-
-```{r}
-url.folha <- "http://search.folha.com.br/search?q=marco%20civil%20da%20internet&site=online&sr="
-dados <- data.frame()
-for (i in 1:34){
-  i = (i - 1) * 25 + 1
-  print(i)
-  url <- paste(url.folha, i, sep = "")
-  pagina <- readLines(url)
-  folha <- htmlParse(pagina)
-  folha <- xmlRoot(folha)
-  conteudo <- getNodeSet(folha,"//div[@class='content']")
-  conteudo <- xmlSApply(conteudo, xmlValue)[2:length(conteudo)]
-  titulos <- getNodeSet(folha,"//h3[@class='search-results-title']/a")
-  titulos <- xmlSApply(titulos, xmlValue)
-  links <- getNodeSet(folha,"//h3[@class='search-results-title']/a")
-  links <- xmlSApply(links, xmlAttrs)
-  busca.folha <- data.frame(titulos, links, conteudo, stringsAsFactors = F)
-  dados <- rbind(dados, busca.folha)
+conteudos <- c()
+atributos <- c()
+for (i in 1:10){
+  
+  conteudo_i <- xmlValue(nodes_link[[1]])
+  conteudos <- c(conteudos, conteudo_i)
+  
+  atributo_i <- xmlGetAttr(nodes_link[[1]], name = "href")
+  atributos <- c(atributos, atributos_i)
 }
+
+dados <- data.frame(conteudos, atributos)
+head(dados)
 ```
 
-Veja que incrível o que acabamos de criar: um banco de dados com os títulos, links e todas os resumos das matérias da Folha de São Paulo sobre o Marco Civil da Internet. Vamos seguir na atividade 5 com a mesma atividade e aproveitar o que fizemos.
+Excelente! Temos um data frame após a raspagem.
+
+Há, porém, uma forma mais rápida de resolver o problema: usando a função "xpathSApply". Basicamente, esta função serve para aplicar outra função, como "xmlValue" ou "xmlGetAttr", automaticamente para um conjunto de nodes, sem precisarmos fazer o que fizemos acima com o "for loop". Em outras palavras, é como se combinassemos a função "getNodeSet", com outra de nossa escolha e já aplicassemos a função a todo o resultado de "getNodeSet" em loop. Veja como funciona e note que a função "xmlValue" entra como argumento da função "xpathSApply":
+
+```{r}
+conteudos <- xpathSApply(pagina, "//ul[@class='lista_navegacao']/li/a", xmlValue)
+print(conteudos)
+```
+
+Incrível, não? Veja como economizamos na "quantidade" de código para a tarefa de capturar os conteúdos. Vamos repetir o procedimento para os valores dos atributos, com o cuidado de nota que o argumento "name" necessário para a função "xmlGetAttr" deve vir como argumento também quando usamos a função "xpathSApply" após os demais:
+
+```{r}
+atributos <- xpathSApply(pagina, "//ul[@class='lista_navegacao']/li/a", xmlGetAttr, name = "href")
+print(atributos)
+```
+
+Encerramos juntando ambos vetores em um data frame:
+
+```{r}
+dados <- data.frame(conteudos, atributos)
+head(dados)
+```
+
+O desafio a partir de agora é conectar o que aprendemos da raspagem de dados de várias páginas com "for loop", mas usando a função "readHTMLTable", com as novas funções de raspagem de páginas que extraem com precisão o que conteúdo que nos interessa. Esta será nossa próxima atividade.
