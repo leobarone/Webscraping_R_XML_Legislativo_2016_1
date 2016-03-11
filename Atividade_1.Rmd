@@ -252,7 +252,7 @@ São 50 observações (5 páginas com 10 resultados) e 4 variáveis (data, títu
 # Estrutura do data frame
 str(dados)
 
-# 6 priemiras observações
+# 6 primeiras observações
 head(dados)
 
 # 6 últimas observações
