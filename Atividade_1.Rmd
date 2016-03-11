@@ -216,9 +216,9 @@ Neste último passo, vamos fazer o seguinte: precisamos de uma estrutura que arm
 
 ```{r}
 # Criando 2 data frames separados
-meus.dados1 <- data.frame("id" = 1:10, "Experimento" = rep(c("Tratamento"), 5))
+meus.dados1 <- data.frame("id" = 1:10, "Experimento" = rep(c("Tratamento"), 10))
 print(meus.dados1)
-meus.dados2 <- data.frame("id" = 11:20, "Experimento" = rep(c("Controle"), 5))
+meus.dados2 <- data.frame("id" = 11:20, "Experimento" = rep(c("Controle"), 10))
 print(meus.dados2)
 
 # Combinando os dois data.frames
