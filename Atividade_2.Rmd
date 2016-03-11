@@ -259,7 +259,7 @@ Note que a classe do resultado da aplicação de uma das quatro funções não �
 class(pagina)
 ```
 
-# Navegando e conhecendo um documento HTML com o a biblioteca XML 
+# Extraindo os conteúdos de uma página com a biblioteca XML
 
 Vamos agora aprender a "navegar" um objeto XML dentro do R e extrair dele apenas o conteúdo que nos interessa.
 
