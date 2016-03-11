@@ -80,7 +80,7 @@ Em geral, as "tags" vem em pares: uma de abertura e outra de fechamento. O que a
 </tag_pai>
 ```
 
-Identação (espaços) nos ajudam a ver a hierarquia entre as tags, mas não são obrigatórios. Também as quebras de linha são opcionais.
+Identação (espaços) nos ajudam a ver a hierarquia entre as tags, mas não é obrigatória. Também as quebras de linha são opcionais.
 
 Além do conteúdo e do nome da tag, é extremamente comum encontrarmos "atributos" nas tags em bancos de dados e, sobretudo, em códigos HTML. Atributos ajudam a especificar a tag, ou seja, identificam qual é o seu uso ou carregam quaisquer outras informações referentes. Voltando ao exemplo fictício acima, poderíamos transformar a informação do cargo, que hoje é uma tag cargo dentro de outra tag cargo (horrível, não?) em atributo.
 
@@ -190,11 +190,11 @@ Ou "todas as 'tags' filhas de qualquer 'tag' 'cargo'" (usa-se um asterisco para 
 
 "//cargo/*"
 
-Observe o potencial dos "caminhos" para a captura de dados: podemos localizar em qualquer documento XML ou HTML uma informação usando a própria estrutura do documento. Não precisamos organzinar o documento todo, basta extrair cirurgicamente o que queremos -- o que é a regra na raspagem de páginas de internet.
+Observe o potencial dos "caminhos" para a captura de dados: podemos localizar em qualquer documento XML ou HTML uma informação usando a própria estrutura do documento. Não precisamos organizar o documento todo, basta extrair cirurgicamente o que queremos -- o que é a regra na raspagem de páginas de internet.
 
 # Links na página de busca da ALESP
 
-Vamos entrar na página principal da ALESP e fazer uma pesquisa simples na caixa de busca -- exatamente como faríamos em um jornal ou qualquer outro portal de internet (o processo seria o mesmo em buscadores como Google ou DuckDuckGo). Por exemplo, vamos pesquisa a palavra "merenda". A ferramenta de busca nos retorna uma lista de links que nos encaminharia para diversos documentos ou páginas da ALESP relacionadas ao termo buscado.
+Vamos entrar na página principal da ALESP e fazer uma pesquisa simples na caixa de busca -- exatamente como faríamos em um jornal ou qualquer outro portal de internet (o processo seria o mesmo em buscadores como Google ou DuckDuckGo). Por exemplo, vamos pesquisar a palavra "merenda". A ferramenta de busca nos retorna uma lista de links que nos encaminharia para diversos documentos ou páginas da ALESP relacionadas ao termo buscado.
 
 Nosso objetivo é construir um vetor com os links dos resultados. Em qualquer página de internet, links estão dentro da tag "a". Uma maneira equivocada de encontrar todos os links da página usando "caminhos em XML" seria:
 
@@ -250,7 +250,7 @@ pagina <- htmlParse(pagina)
 ```
 
 A partir de agora, sempre que capturarmos uma página, seja em HTML ou em XML (como são os RSSs), vamos fazer um "parse". Há 4 funções no pacote "XML" -- "xmlParse", "htmlParse", "xmlTreeParse" e "htmlTreeParse" -- bastante semelhantes entre si e cujo propósito é capturar um conteúdo em HTML ou XML e identificar sua estrutura, de forma a permitir a "navegação"
-por meio dos nodes ou tags. Para compreender as diferencas entre as funções, vale a pena usar o help -- dígite ?xmlParse na linha de comando.
+por meio dos nodes ou tags. Para compreender as diferenças entre as funções, vale a pena usar o help -- digite ?xmlParse na linha de comando.
 
 
 Note que a classe do resultado da aplicação de uma das quatro funções não é mais um texto, mas um conjunto de objetos de classes específicas ("XMLInternalDocument" e "XMLAbstractDocument", neste caso) e que podem ser exploradas com as funções do pacote XML que veremos nesta atividade.
