@@ -32,4 +32,6 @@ Está é uma oficina livre e gratuita e não haverá emissão de certificado de 
 ## Materiais
 R é uma linguagem/ambiente livre e gratuita. Os materiais e atividade da oficina ficarão disponíveis neste repositório na forma de material auto-didático. Se, por acaso, você não tiver chance de participar pode dar uma olhada por aqui ao final das oficinas.
 
-Exemplo de material - Atividade 1 (em construção, mas pode dar uma olhada):  https://github.com/leobarone/Webscraping_R_XML_Legislativo_2016_1/blob/master/Atividade_1.Rmd
+Os mateirais so primeiro dia da oficina são os seguintes: 
+- Atividade 1: https://github.com/leobarone/Webscraping_R_XML_Legislativo_2016_1/blob/master/Atividade_1.Rmd
+- Atividade 2: https://github.com/leobarone/Webscraping_R_XML_Legislativo_2016_1/blob/master/Atividade_2.Rmd
