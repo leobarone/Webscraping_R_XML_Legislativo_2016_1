@@ -34,7 +34,7 @@ Há 4 informações sobre as proposições: data, título (e número do projeto)
 
 Podemos prosseguir, clicando nos botões de navegação ao final da página, para as demais páginas da pesquisa. Por exemplo, podemos ir para a página 2 clicando uma vez na seta indicando à direita.
 
-OBS: Há uma razão importante para começarmos nosso teste com a segunda página da busca. Em diversos servidores web, como este da ALESP, o link (endereço url) da primeira página é "diferente" dos demais. Em geral, os links são semelhantes da segunda página em diante. Você verá adiante que as informações p
+OBS: Há uma razão importante para começarmos nosso teste com a segunda página da busca. Em diversos servidores web, como este da ALESP, o link (endereço url) da primeira página é "diferente" dos demais. Em geral, os links são semelhantes da segunda página em diante.
 
 Nossa primeira tarefa consiste em capturar estas informações. Vamos, no decorrer da atividade aprender bastante sobre R, objetos, estruturas de dados, loops e captura de tabelas em HTML.
 
@@ -46,7 +46,7 @@ url_base <- "http://www.al.sp.gov.br/alesp/pesquisa-proposicoes/?direction=acima
 
 Há muitas informações nesse link, basicamente todos os campos que poderiam ter sido especificados na busca são apresentados no endereço. Como preenchemos apenas com o termo ("merenda"), esse será o único parametro definido na URL ("text=merenda").
 
-Também podemos observar que a pesquisa retornou 75 páginas ("lastPage=75") e que a página atual é a de número 1 ("currentPage=1") -- página 1 da pesquisa é numerada como 0 nesta ferramenta de busca, mas o padrão muda de página para página.
+Também podemos observar que a pesquisa retornou 75 páginas ("lastPage=75") e que a página atual é a de número 1 ("currentPage=1") -- página 2 da pesquisa é numerada como 0 nesta ferramenta de busca, mas o padrão muda de página para página.
 
 Podemos ver que há muitas páginas de resultado para a palavra-chave que utilizamos. Nosso desafio é conseguir "passar" de forma eficiente por elas, ou seja, acessar os 75 links e "raspar" o seu conteúdo. Para isso, usaremos uma função essencial na programação, o "for loop".
 
@@ -57,7 +57,7 @@ for (i in 1:9) {
   print(i)
 }
 ```
-Simples, não? Vamos ler esta instrução da seguinte maneira: "para cada número i no conjunto que vai de 1 até 9 (essa é a parte no parênteses) imprimir o número i (instrução entre chaves)". E se quisermos imprimir o número i multiplicado por 9 (o que nos dá a tabuada do 7!!!), como devemos fazer?
+Simples, não? Vamos ler esta instrução da seguinte maneira: "para cada número i no conjunto que vai de 1 até 9 (essa é a parte no parênteses) imprimir o número i (instrução entre chaves)". E se quisermos imprimir o número i multiplicado por 7 (o que nos dá a tabuada do 7!!!), como devemos fazer?
 
 ```{r}
 for (i in 1:9) {
