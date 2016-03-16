@@ -41,9 +41,11 @@ pagina <- xmlRoot(pagina)
 
 Excelente. Com o objeto XML preparado e representando a página com a qual estamos trabalhando, vamos à caça das informações que queremos.
 
-Volte para a página da notícia. Procure o título da notícia e examine-o, inspencionando o código clicando com o botão direito do mouse e selecionando "Inspecionar". Note que encontramos:
+Volte para a página da notícia. Procure o título da notícia e examine-o, inspencionando o código clicando com o botão direito do mouse e selecionando "Inspecionar". Note o que encontramos:
 
+```{r}
 <h1 class="main_color main_title"><!--TITULO-->49% não votariam em Lula<!--/TITULO--></h1>
+```
 
 Tente sozinh@ e por aproximadamente 1~2 minutos construir i "xpath" (caminho em XML) que nos levaria a este elemento antes de avançar. (Tente sozinh@ antes de copiar a resposta abaixo!)
 
