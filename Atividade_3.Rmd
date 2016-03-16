@@ -129,6 +129,21 @@ Sempre que estiver em posse de um conjunto de links que contém arquivos, você 
 
 Vamos voltar agora às notícias do DataFolha em HTML e ignorar o donwload de arquivos com os relatórios das pesquisas.
 
+# Um código, duas etapas: raspando todas as notícias de eleições do DataFolha
+
+Vamos fazer um breve roteiro do que precisamos fazer para criar um banco de dados que contenha todos os títulos, data e hora e texto de todas as notícias sobre eleições do DataFolha (Obs: por enquanto vamos ignorar os links de pesquisa, pois nem todas as notícias contêm os links e isso causa interrupção do código. Ao final, apresentamos um código que resolve tal problema).
+
+### Etapa 1
+* Passo 1: conhecer a página de busca (e compreender como podemos "passar" de uma página para outra
+* Passo 2: raspar (em loop!) as páginas de busca para obter todos os links de notícia
+
+Esta é a primeira etapa da captura. Em primeiro lugar temos que buscar todos os URLs que contêm as notícias buscadas. Em outras palavras, começamos obtendo "em loop" os links das notícias e, só depois de termos os links, obtemos o conteúdo destes links. Nossos passos seguintes, portanto, são:
+
+### Etapa 2
+* Passo 3: conhecer a página da notícia (e ser capaz de obter nela as informações desejadas)
+* Passo 4: raspar (em um novo loop!) o conteúdo dos links capturados no Passo 2.
+
+
 ```{r}
 url_base <- "http://search.folha.uol.com.br/search?q=elei%E7%F5es&site=datafolha%2Feleicoes&skin=datafolha&results_count=516&search_time=0.030&url=http%3A%2F%2Fsearch.folha.uol.com.br%2Fsearch%3Fq%3Delei%25E7%25F5es%26site%3Ddatafolha%252Feleicoes%26skin%3Ddatafolha&sr=CONTADORLINK"
 links_datafolha <- c()
