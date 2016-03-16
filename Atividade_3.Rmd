@@ -145,6 +145,8 @@ Esta é a primeira etapa da captura. Em primeiro lugar temos que buscar todos os
 
 Vamos construir o código da primeira etapa da captura e, uma vez resolvida a primeira etapa, faremos o código da segunda.
 
+### Código da etapa 1
+
 Em primeiro lugar, vamos observar o URL da página de busca (poderíamos buscar termos chave, mas, neste caso, vamos pegar todas as notícias relacionadas a eleições).Na página 2 da busca vemos que o final é "sr=26". Na página 3 o final é "sr=51". Há um padrão: as buscas são realizadas de 25 em 25. De fato, a 21a. é última página da busca. Para "passarmos" de página em página, portanto, temos que ter um "loop" que conte não mais de 1 até 21, mas na seguinte sequência numérica: {1, 26, 51, 76, ..., 476, 501}.
 
 Parece difícil, mas é extremamente simples. Veja o loop abaixo, que imprime a sequência desejada multiplicando (i - 1) por 25 e somando 1 ao final:
@@ -187,7 +189,9 @@ for (i in 1:21){
 }
 ```
 
-Temos, ao final, o objeto links_datafolha que contém todos os links para as notícias sobre eleições no DataFolha. Encerramos com sucesso a Etapa 1 -- caracterizada pelo primeiro loop. Vamos agora iniciar a etapa 2.
+Temos, ao final, o objeto links_datafolha que contém todos os links para as notícias sobre eleições no DataFolha. Encerramos com sucesso a Etapa 1 -- caracterizada pelo primeiro loop. Esta etapa se assemelha bastante ao que fizemos nas atividades 1 e 2 e o código deve ser compreensível para você a essa altura do campeonato. Vamos agora iniciar a etapa 2.
+
+### Código da etapa 2
 
 ```{r}
 dados <- data.frame()
