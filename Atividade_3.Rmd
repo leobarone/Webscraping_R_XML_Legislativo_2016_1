@@ -173,7 +173,7 @@ pagina <- xmlRoot(pagina)
 link <- xpathSApply(pagina, "//h2[@class = 'title']/a", xmlGetAttr, name = "href")
 ```
 
-Combinando o que vimos até agora, podemos executar o Passo 2. Falta apenas criar antes do loop um vetor vazio que, a cada iteração do loop "guarda" os links raspados da página. Sua tarefa é gastar MUITOS minutos no código abaixo para entendê-lo na totalidade.
+Combinando o que vimos até agora, podemos executar o Passo 2. Falta apenas criar antes do loop um vetor vazio -- por exemplo, o vetor "links_datafolha" no código abaixo -- que, a cada iteração do loop "guarda" os links raspados da página. Sua tarefa é gastar MUITOS minutos no código abaixo para entendê-lo na totalidade.
 
 ```{r}
 links_datafolha <- c()
@@ -193,6 +193,29 @@ Temos, ao final, o objeto links_datafolha que contém todos os links para as not
 
 ### Código da etapa 2
 
+No começo da atividade resolvemos a captura do título, data e hora, link para o relatório de pesquisa completa e texto para uma única notícia no portal do instituto DataFolha. Nos resta agora capturar, em loop, o conteúdo de cada uma das páginas cujos links estão guardados no vetor "links_datafolha".
+
+Vamos rever o procedimento, para uma URL qualquer, da captura do título, data e hora e texto (vamos deixar o link para o relatório de pesquisa de lado por enquanto, posto que algumas notícias não contêm o link e esta pequena ausência interromperia o funcionamento do código).
+
+```{r}
+pagina <- readLines("http://datafolha.folha.uol.com.br/eleicoes/2016/02/1744581-49-nao-votariam-em-lula.shtml")
+pagina <- htmlParse(pagina)
+pagina <- xmlRoot(pagina)
+titulo <- xpathSApply(pagina, "//h1[@class = 'main_color main_title']", xmlValue)
+datahora <- xpathSApply(pagina, "//time", xmlValue)
+texto <- xpathSApply(pagina, "//article[@class = 'news']" , xmlValue)
+```
+
+Para fazermos a captura de todos os links em "loop" deve ter o seguinte aspecto, como se vê no código abaixo que imprime todos os 516 links cujo conteúdo queremos capturar. Note que a forma de utilizar o loop é ligeiramente diferente da que havíamos visto até então. No lugar de uma variável "i" que "percorre" um vetor numérico (1:21, por exemplo), temos uma variável "link" que recebe, a cada iteração, um endereço URL do vetor "links_datafolha", em ordem. Assim, na primeira iteração temos que "link" será igual "links_datafolha[1]", na segunda "links_datafolha[2]" e assim por diante até a última posição do vetor "links_datafolha" -- no nosso caso a posição 516.
+
+```{r}
+for (link in links_datafolha){
+  print(link)
+}
+```
+
+Combinando os dois código, e criando um data frame "dados" que é vazio antes do loop temos o código completo da captura. Tal como quando trabalhamos com tabelas, utilizando a função "rbind" para combinar o data frame que resultou da iteração anterior com a linha que combina o conteúdo armazenado em "titulo", "datahora" e "texto".
+
 ```{r}
 dados <- data.frame()
 for (link in links_datafolha){
@@ -203,6 +226,13 @@ for (link in links_datafolha){
   titulo <- xpathSApply(pagina, "//h1[@class = 'main_color main_title']", xmlValue)
   datahora <- xpathSApply(pagina, "//time", xmlValue)
   texto <- xpathSApply(pagina, "//article[@class = 'news']" , xmlValue)
-  dados <- rbind(dados, data.frame(titulo, datahora, texto, check.rows = T))
+  dados <- rbind(dados, data.frame(titulo, datahora, texto))
 }
 ```
+O resultado do código é um data frame ("dados") que contém 3 variáveis em suas colunas: "titulo", "datahora" e "texto". A partir de agora você poderia, por exemplo, usar as ferramentas presentes no pacote "tm" da linguagem R ("tm" é acronismo de "text mining") para criar uma nuvem de palavras ("wordcloud"), fazer a contagem de termos, examinar a semelhança da linguagem usada pelo instituto DataFolha com a usada por outros institutos de opinião pública, fazer análise de sentimentos, etc.
+
+Antes disso, sua tarefa é a seguinte: executar ambas as etapas do código e comentá-lo por completo (use # para inserir linhas de comentário). Comentar o código alheio é uma excelente maneira de ver se você conseguiu compreendê-lo por completo e serve para você voltar ao código no futuro quando for usá-lo de modelo para seus próprios programas em R.
+
+## EXTRA: versão do código com links para pesquisa e com texto "limpo"
+
+
