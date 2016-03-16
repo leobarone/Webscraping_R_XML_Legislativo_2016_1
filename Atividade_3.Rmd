@@ -235,4 +235,59 @@ Antes disso, sua tarefa é a seguinte: executar ambas as etapas do código e com
 
 ## EXTRA: versão do código com links para pesquisa e com texto "limpo"
 
+```{r}
+nullToNA <- function(x) {
+  if (is.null(x)){
+    return(NA)
+    } else {
+      return(x)
+    }
+}
+```
 
+```{r}
+texto_vetor <- xpathSApply(pagina, "//article[@class = 'news']/p" , xmlValue)
+texto <- c()
+for (paragrafo in texto_vetor){
+  texto <- paste(texto, paragrafo)
+}
+texto <- nulltona(texto)
+```
+
+
+```{r}
+url_base <- "http://search.folha.uol.com.br/search?q=elei%E7%F5es&site=datafolha%2Feleicoes&skin=datafolha&results_count=516&search_time=0.030&url=http%3A%2F%2Fsearch.folha.uol.com.br%2Fsearch%3Fq%3Delei%25E7%25F5es%26site%3Ddatafolha%252Feleicoes%26skin%3Ddatafolha&sr=CONTADORLINK"
+
+links_datafolha <- c()
+for (i in 1:21){
+  print(i)
+  i <- (i - 1) * 25 + 1
+  url <- gsub("CONTADORLINK", i, url_base)
+  pagina <- readLines(url)
+  pagina <- htmlParse(pagina)
+  pagina <- xmlRoot(pagina)
+  link <- xpathSApply(pagina, "//h2[@class = 'title']/a", xmlGetAttr, name = "href")
+  links_datafolha <- c(links_datafolha, link)
+}
+
+dados <- data.frame()
+for (link in links_datafolha){
+  print(link)
+  pagina <- readLines(link)
+  pagina <- htmlParse(pagina)
+  pagina <- xmlRoot(pagina)
+  
+  titulo <- nulltona(xpathSApply(pagina, "//h1[@class = 'main_color main_title']", xmlValue))
+  datahora <- nulltona(xpathSApply(pagina, "//time", xmlValue))
+  pesquisa <- nulltona(xpathSApply(pagina, "//p[@class = 'stamp download']/a" , xmlGetAttr, name = "href"))
+
+  texto_vetor <- xpathSApply(pagina, "//article[@class = 'news']/p" , xmlValue)
+  texto <- c()
+  for (paragrafo in texto_vetor){
+    texto <- paste(texto, paragrafo)
+  }
+  texto <- nulltona(texto)
+  
+  dados <- rbind(dados, data.frame(titulo, datahora, pesquisa, texto, check.rows = T))
+}
+```
