@@ -1,0 +1,64 @@
+---
+title: "Oficina de webscraping de dados Legislativos com R e XML - Atividade 3"
+author: "Leonardo Sangali Barone e Alexia Aslan"
+date: "18-03-2016"
+output: pdf_document
+---
+
+# Notícias no site DataFolha
+
+```{r}
+library(XML)
+url <- "http://datafolha.folha.uol.com.br/eleicoes/2016/02/1744581-49-nao-votariam-em-lula.shtml"
+pagina <- readLines(url)
+pagina <- htmlParse(pagina)
+pagina <- xmlRoot(pagina)
+```
+
+```{r}
+titulo <- xpathSApply(pagina, "//h1[@class = 'main_color main_title']", xmlValue)
+```
+
+```{r}
+datahora <- xpathSApply(pagina, "//time", xmlValue)
+```
+
+```{r}
+pesquisa <- xpathSApply(pagina, "//p[@class = 'stamp download']/a" , xmlGetAttr, name = "href")
+```
+
+```{r}
+texto <- xpathSApply(pagina, "//article[@class = 'news']" , xmlValue)
+```
+
+"http://datafolha.folha.uol.com.br/eleicoes/2014/08/1503194-maioria-no-pe-nao-sabe-quem-dilma-e-lula-apoiam-para-governo-estadual.shtml"
+
+```{r}
+url_base <- "http://search.folha.uol.com.br/search?q=elei%E7%F5es&site=datafolha%2Feleicoes&skin=datafolha&results_count=516&search_time=0.030&url=http%3A%2F%2Fsearch.folha.uol.com.br%2Fsearch%3Fq%3Delei%25E7%25F5es%26site%3Ddatafolha%252Feleicoes%26skin%3Ddatafolha&sr=CONTADORLINK"
+links_datafolha <- c()
+for (i in 1:21){
+  print(i)
+  i <- (i - 1) * 25 + 1
+  url <- gsub("CONTADORLINK", i, url_base)
+  pagina <- readLines(url)
+  pagina <- htmlParse(pagina)
+  pagina <- xmlRoot(pagina)
+  link <- xpathSApply(pagina, "//h2[@class = 'title']/a", xmlGetAttr, name = "href")
+  links_datafolha <- c(links_datafolha, link)
+}
+```
+
+
+```{r}
+dados <- data.frame()
+for (link in links_datafolha){
+  print(link)
+  pagina <- readLines(link)
+  pagina <- htmlParse(pagina)
+  pagina <- xmlRoot(pagina)
+  titulo <- xpathSApply(pagina, "//h1[@class = 'main_color main_title']", xmlValue)
+  datahora <- xpathSApply(pagina, "//time", xmlValue)
+  texto <- xpathSApply(pagina, "//article[@class = 'news']" , xmlValue)
+  dados <- rbind(dados, data.frame(titulo, datahora, texto, check.rows = T))
+}
+```
