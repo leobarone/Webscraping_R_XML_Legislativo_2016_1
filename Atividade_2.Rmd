@@ -405,9 +405,9 @@ O desafio a partir de agora é conectar o que aprendemos da raspagem de dados de
 
 Agora que sabemos coletar de uma página da busca o link, por meio da extração de atributos de um node, e o título do resultado com o xmlValue, precisamos repetir o procedimento para todas as páginas de resultado.
 
-Fizemos isso com na atividade 1, mas ainda usávamos a função "readHTMLTable". O objetivo é repetir o que fizemos lá, mas com as novas funções que vimos ao longo da atividade 2.1.
+Fizemos isso na atividade 1, mas ainda usávamos a função "readHTMLTable". O objetivo é repetir o que fizemos lá, mas com as novas funções que vimos ao longo da atividade 2.1.
 
-Para isso, vamos usar o que o que vimos até aqui, incluindo o for loop da atividade 1, para ir de uma página a outra.
+Para isso, vamos usar o for loop da atividade 1, para ir de uma página a outra.
 
 O primeiro passo é, mais uma vez, ter o nosso link da pesquisa que queremos coletar armazenado em um objeto. 
 
@@ -429,9 +429,9 @@ A 'url' é o endereço da página de busca, o i é o contador e o último argume
 
 ## Coletando o conteúdo e o atributo de todos os links
 
-A lógica de coleta do atributo e do conteúdo de um node contínua o mesma. A única diferença é que precisamos aplicar isso para todas as páginas. Agora que temos as nossas páginas prontas para variar, podemos construir um for loop que fará isso para nós.
+A lógica de coleta do atributo e do conteúdo de um node continua o mesma. A única diferença é que precisamos aplicar isso para todas as páginas. Agora que temos a url construída, podemos montar um for loop que fará isso para nós.
 
-No momento que essa atividade foi feita, a pesquisa pelo termo "merenda" tinha 162 páginas de resultado, o que implica que o nosso loop irá de 1, a primeira página, até a página 162, a última. Colocamos um print(i) para mostrar que página o loop está raspando durante o momento da execução.
+No momento que essa atividade foi feita, a pesquisa pelo termo "merenda" tinha 162 páginas de resultado, o que implica que o nosso loop irá de 1, a primeira página, até a página 162, a última. Colocamos um print(i) para mostrar que página o loop está durante a execução.
 
 ```{r}
 for (i in 1:162){
@@ -447,7 +447,7 @@ O que precisamos agora é incluir o que foi discutido ao longo da atividade 2.1.
     pagina <- xmlRoot(pagina)
 ```
 
-Sabemos também coletar de forma eficiente todos os links e todos os títulos por meio do xmlGetAttr e xmlValue, respectivamente.
+Sabemos também coletar de forma eficiente todos os títulos e links por meio do xmlValue e xmlGetAttr, respectivamente.
 
 ```{r}
      conteudos <- xpathSApply(pagina, "//ul[@class='lista_navegacao']/li/a", xmlValue)
@@ -455,13 +455,13 @@ Sabemos também coletar de forma eficiente todos os links e todos os títulos po
     atributos <- xpathSApply(pagina, "//ul[@class='lista_navegacao']/li/a", xmlGetAttr, name = "href")
 ```
 
-Falta empilhar o que produziremos em cada iteração do loop de forma que facilite a visualização. Usaremos a função "rbind" com data frames, pois para cada página agora, teremos 10 resultados em uma tabela com duas variáveis. O que queremos é a junção dos 10 resultados em cada uma das 162 páginas.
+Falta empilhar o que produziremos em cada iteração do loop de uma forma que facilite a visualização. Usaremos a função "rbind" com data frames, pois para cada página agora, teremos 10 resultados em uma tabela com duas variáveis. O que queremos é a junção dos 10 resultados em cada uma das 162 páginas.
 
 ```{r}
 dados <- rbind(dados, data.frame(conteudos, atributos))
 ```
 
-Chegou o momento de colocar no loop tudo que queremos que execute em cada vez que ele ocorrer. Ou seja, que ele imprima na tela a página que está executando, que a url da página de resultados seja construída com a função paste, para todas elas o código HTML seja examinado, lido no R e transformado em objeto XML, colete todos os links e todos os títulos e que empilhe. Lembrando que não podemos esquecer de definir a urlbase que estamos usando e criar um data frame vazio para colocar todos os links e títulos coletados.
+Chegou o momento de colocar dentro loop tudo o que queremos que execute em cada uma das vezes que ele ocorrer. Ou seja, que imprima na tela a página que está executando, que a url da página de resultados seja construída com a função paste, para todas elas o código HTML seja examinado, lido no R e transformado em objeto XML, colete todos os links e todos os títulos e que empilhe. Lembrando que não podemos esquecer de definir a url que estamos usando e criar um data frame vazio para colocar todos os links e títulos coletados.
 
 ```{r}
 urlbase <- "http://www.al.sp.gov.br/alesp/busca/?q=merenda&page="
