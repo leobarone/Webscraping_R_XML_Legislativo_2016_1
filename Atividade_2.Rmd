@@ -13,6 +13,7 @@ Nosso objetivo nessa atividade será capturar uma única página usando a estrut
 
 Antes disso, porém, precisamos falar um pouco sobre XML e HTML.
 
+# Atividade 2.1
 # XML e HTML
 
 XML significa "Extensive Markup Language". Ou seja, é uma linguagem -- e, portanto, tem sintaxe -- e é uma linguagem com marcação. Marcação, neste caso, significa que todo o conteúdo de um documento XML está dentro de "marcas", também conhecidas como "tags". É uma linguagem extremamente útil para transporte de dados -- por exemplo, a Câmara dos Deputados utiliza XML em seu Web Service para disponibilizar dados abertos (mas você não precisa saber disso se quiser usar o pacote de R bRasilLegis que nós desenvolvemos ;) -- disponível aqui: https://github.com/leobarone/bRasilLegis.
@@ -399,3 +400,55 @@ head(dados)
 ```
 
 O desafio a partir de agora é conectar o que aprendemos da raspagem de dados de várias páginas com "for loop", mas usando a função "readHTMLTable", com as novas funções de raspagem de páginas que extraem com precisão o que conteúdo que nos interessa. Esta será nossa próxima atividade.
+
+# Atividade 2.2
+
+Agora que sabemos coletar de uma página da busca o link por meio da extração de atributos de um node e o título do resultado com o xmlValue, precisamos repetir o procedimento para todas as páginas de resultado.
+
+Para isso, vamos usar o que o que vimos até aqui, incluindo o for loop da atividade 1, para ir de uma página a outra automaticamente.
+
+O primeiro passo é, mais uma vez, ter o nosso link da pesquisa que queremos coletar armazenado em um objeto. 
+
+```{r}
+urlbase <- "http://www.al.sp.gov.br/alesp/busca/?q=merenda&page="
+```
+
+# Função Paste 
+Como é possível reparar, o número da página fica ao final do link, por isso podemos utilizar uma nova função chamada "paste" ou "colar" ao invés da função "gsub". 
+O que faremos é colar nosso contador (i) no final do link. Então o que queremos é uma combinação do nosso url com o contador sem nada separando os dois. A função 'paste' funciona com os argumentos (em ordem): onde você quer colar, o que você quer colar (pode ser mais de uma coisa), especificação de qual é o separador.
+
+Na linguagem do R, escreveremos assim para o nosso caso:
+
+```{r}
+paste(urlbase, i, sep = "")
+```
+
+A 'url' é o endereço da página de busca, o i é o contador e o último argumento refere-se ao separador que igualamos a um par de aspas sem nada dentro, deixando claro que para funcionar corretamente nada, nem uma barra de espaço, deve ficar entre o endereço e o contador.
+
+#
+
+
+
+------
+
+```{r}
+urlbase <- "http://www.al.sp.gov.br/alesp/busca/?q=merenda&page="
+
+dados <- data.frame()
+
+for (i in 1:162){
+    print(i)
+    url <- paste(urlbase, i, sep = "")
+  
+    pagina <- readLines(url)
+    pagina <- htmlParse(pagina)
+    pagina <- xmlRoot(pagina)
+    
+    conteudos <- xpathSApply(pagina, "//ul[@class='lista_navegacao']/li/a", xmlValue)
+    
+    atributos <- xpathSApply(pagina, "//ul[@class='lista_navegacao']/li/a", xmlGetAttr, name = "href")
+    
+    dados <- rbind(dados, data.frame(conteudos, atributos))
+    
+}
+```
