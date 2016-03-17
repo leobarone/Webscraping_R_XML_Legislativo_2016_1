@@ -14,7 +14,7 @@ Nosso objetivo nessa atividade será capturar uma única página usando a estrut
 Antes disso, porém, precisamos falar um pouco sobre XML e HTML.
 
 # Atividade 2.1
-# XML e HTML
+## XML e HTML
 
 XML significa "Extensive Markup Language". Ou seja, é uma linguagem -- e, portanto, tem sintaxe -- e é uma linguagem com marcação. Marcação, neste caso, significa que todo o conteúdo de um documento XML está dentro de "marcas", também conhecidas como "tags". É uma linguagem extremamente útil para transporte de dados -- por exemplo, a Câmara dos Deputados utiliza XML em seu Web Service para disponibilizar dados abertos (mas você não precisa saber disso se quiser usar o pacote de R bRasilLegis que nós desenvolvemos ;) -- disponível aqui: https://github.com/leobarone/bRasilLegis.
 
@@ -61,7 +61,7 @@ Abra agora a página inicial da ALESP. Posicione o mouse em qualquer elemento da
 
 Sem precisar observar muito, é fácil identificar que o código HTML da ALESP se assemelha ao nosso breve exemplo de arquivo XML. Não por acaso: HTML é um tipo de XML. Em outra palavras, toda página de internet está em um formato de dados conhecido e, como veremos a seguir, pode ser re-organizado facilmente.
 
-# Tags, nodes, atributos, valores e conteúdo na linguagem XML
+## Tags, nodes, atributos, valores e conteúdo na linguagem XML
 
 Todas as informações em um documento XML estão dispostas em "tags" (id, nome, etc são as tags do nosso exemplo). Um documento XML é um conjunto de "tags" que contém hierarquia. Um conjunto de "tags" hierarquicamente organizado é chamado de "node". Por exemplo, no arquivo XML da Câmara dos Deputados apresentado acima, cada tag político contêm diversos outras "tags" e formam "nodes", ou seja, pedaços do arquivo XML.
 
@@ -153,7 +153,7 @@ Veja que agora a tag "cargo" tem um atributo -- "tipo" -- cujos valores são "pr
 
 Tente, no próprio site da ALESP, clicar com o botão direito em um hyperlink qualquer (por exemplo, "TV Assembléia SP") para observar algo semelhante ao exemplo acima. Adiante vamos ver como atributos são extremamente úteis ao nosso propósito.
 
-# Caminhos no XML e no HTML
+## Caminhos no XML e no HTML
 
 O fato de haver hierarquia nos códigos XML e HTML nos permite construir "caminhos", como se fossem caminhos de pastas em um computador, dentro do código.
 
@@ -193,7 +193,7 @@ Ou "todas as 'tags' filhas de qualquer 'tag' 'cargo'" (usa-se um asterisco para 
 
 Observe o potencial dos "caminhos" para a captura de dados: podemos localizar em qualquer documento XML ou HTML uma informação usando a própria estrutura do documento. Não precisamos organizar o documento todo, basta extrair cirurgicamente o que queremos -- o que é a regra na raspagem de páginas de internet.
 
-# Links na página de busca da ALESP
+## Links na página de busca da ALESP
 
 Vamos entrar na página principal da ALESP e fazer uma pesquisa simples na caixa de busca -- exatamente como faríamos em um jornal ou qualquer outro portal de internet (o processo seria o mesmo em buscadores como Google ou DuckDuckGo). Por exemplo, vamos pesquisar a palavra "merenda". A ferramenta de busca nos retorna uma lista de links que nos encaminharia para diversos documentos ou páginas da ALESP relacionadas ao termo buscado.
 
@@ -227,7 +227,7 @@ Pegou o espírito? Vamos agora dar o nome correto a este "caminho": xPath.
 
 Vamos agora voltar ao R e aprender a usar os caminhos para criar objetos no R.
 
-# Capturar uma página e examinar sua estrutura
+## Capturar uma página e examinar sua estrutura
 
 O primeiro passo na captura de uma página de internet é criar um objeto que contenha o código HTML da página. Para tanto, usamos a função "readLines" -- que é a mesma que utilizaríamos para qualquer documento de texto, Vamos usar a segunda página da busca pela palavra "merenda" na ALESP como exemplo:
 
@@ -260,7 +260,7 @@ Note que a classe do resultado da aplicação de uma das quatro funções não �
 class(pagina)
 ```
 
-# Extraindo os conteúdos de uma página com a biblioteca XML
+## Extraindo os conteúdos de uma página com a biblioteca XML
 
 Vamos agora aprender a "navegar" um objeto XML dentro do R e extrair dele apenas o conteúdo que nos interessa.
 
@@ -413,7 +413,7 @@ O primeiro passo é, mais uma vez, ter o nosso link da pesquisa que queremos col
 urlbase <- "http://www.al.sp.gov.br/alesp/busca/?q=merenda&page="
 ```
 
-# Função Paste 
+## Função Paste 
 Como é possível reparar, o número da página fica ao final do link, por isso podemos utilizar uma nova função chamada "paste" ou "colar" ao invés da função "gsub". 
 O que faremos é colar nosso contador (i) no final do link. Então o que queremos é uma combinação do nosso url com o contador sem nada separando os dois. A função 'paste' funciona com os argumentos (em ordem): onde você quer colar, o que você quer colar (pode ser mais de uma coisa), especificação de qual é o separador.
 
@@ -425,9 +425,41 @@ paste(urlbase, i, sep = "")
 
 A 'url' é o endereço da página de busca, o i é o contador e o último argumento refere-se ao separador que igualamos a um par de aspas sem nada dentro, deixando claro que para funcionar corretamente nada, nem uma barra de espaço, deve ficar entre o endereço e o contador.
 
-#
+## Coletando o conteúdo e o atributo de todos os links
 
+A lógica de coleta do atributo e do conteúdo de um node contínua o mesma. A única diferença é que precisamos aplicar isso para todas as páginas. Agora que temos as nossas páginas prontas para variar, podemos construir um for loop que fará isso para nós.
 
+No momento que essa atividade foi feita, a pesquisa pelo termo "merenda" tinha 162 páginas de resultado, o que implica que o nosso loop irá de 1, a primeira página, até a página 162, a última. Colocamos um print(i) para mostrar que página o loop está raspando durante o momento da execução.
+
+```{r}
+for (i in 1:162){
+  print(i)
+}
+```
+
+O que precisamos agora é incluir o que foi discutido ao longo da atividade 2.1. Para extrair as informações de uma página da internet precisamos examinar o código HTML, ler no R e transformar em um objeto XML.
+
+```{r}
+    pagina <- readLines(url)
+    pagina <- htmlParse(pagina)
+    pagina <- xmlRoot(pagina)
+```
+
+Sabemos também coletar de forma eficiente todos os links e todos os títulos por meio do xmlGetAttr e xmlValue, respectivamente.
+
+```{r}
+     conteudos <- xpathSApply(pagina, "//ul[@class='lista_navegacao']/li/a", xmlValue)
+    
+    atributos <- xpathSApply(pagina, "//ul[@class='lista_navegacao']/li/a", xmlGetAttr, name = "href")
+```
+
+Falta empilhar o que produziremos em cada iteração do loop de forma que facilite a visualização. Usaremos a função "rbind" com data frames, pois para cada página agora, teremos 10 resultados em uma tabela com duas variáveis. O que queremos é a junção dos 10 resultados em cada uma das 162 páginas.
+
+```{r}
+dados <- rbind(dados, data.frame(conteudos, atributos))
+```
+
+Chegou o momento de colocar no loop tudo que queremos que execute em cada vez que ele ocorrer. Ou seja, que ele imprima na tela a página que está executando, [AQUI]que para todas elas o código HTML seja examinado, lido no R e transformado em objeto XML, colete todos os links e todos os títulos e que empilhe. Lembrando que não podemos esquecer de definir a urlbase que estamos usando
 
 ------
 
