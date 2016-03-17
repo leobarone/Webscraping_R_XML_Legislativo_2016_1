@@ -369,7 +369,7 @@ for (i in 1:10){
   conteudos <- c(conteudos, conteudo_i)
   
   atributo_i <- xmlGetAttr(nodes_link[[1]], name = "href")
-  atributos <- c(atributos, atributos_i)
+  atributos <- c(atributos, atributo_i)
 }
 
 dados <- data.frame(conteudos, atributos)
@@ -403,9 +403,11 @@ O desafio a partir de agora é conectar o que aprendemos da raspagem de dados de
 
 # Atividade 2.2
 
-Agora que sabemos coletar de uma página da busca o link por meio da extração de atributos de um node e o título do resultado com o xmlValue, precisamos repetir o procedimento para todas as páginas de resultado.
+Agora que sabemos coletar de uma página da busca o link, por meio da extração de atributos de um node, e o título do resultado com o xmlValue, precisamos repetir o procedimento para todas as páginas de resultado.
 
-Para isso, vamos usar o que o que vimos até aqui, incluindo o for loop da atividade 1, para ir de uma página a outra automaticamente.
+Fizemos isso com na atividade 1, mas ainda usávamos a função "readHTMLTable". O objetivo é repetir o que fizemos lá, mas com as novas funções que vimos ao longo da atividade 2.1.
+
+Para isso, vamos usar o que o que vimos até aqui, incluindo o for loop da atividade 1, para ir de uma página a outra.
 
 O primeiro passo é, mais uma vez, ter o nosso link da pesquisa que queremos coletar armazenado em um objeto. 
 
@@ -415,7 +417,7 @@ urlbase <- "http://www.al.sp.gov.br/alesp/busca/?q=merenda&page="
 
 ## Função Paste 
 Como é possível reparar, o número da página fica ao final do link, por isso podemos utilizar uma nova função chamada "paste" ou "colar" ao invés da função "gsub". 
-O que faremos é colar nosso contador (i) no final do link. Então o que queremos é uma combinação do nosso url com o contador sem nada separando os dois. A função 'paste' funciona com os argumentos (em ordem): onde você quer colar, o que você quer colar (pode ser mais de uma coisa), especificação de qual é o separador.
+O que faremos é colar nosso contador (o "i", aquilo que vai mudar a cada vez que o loop realizar uma iteração) no final do link. Então o que queremos é uma combinação do nosso url com o contador sem nada separando os dois. A função 'paste' é ideal para isso e funciona com os argumentos da seguinte maneira: onde você quer colar, o que você quer colar (pode ser mais de uma coisa), especificação de qual é o separador.
 
 Na linguagem do R, escreveremos assim para o nosso caso:
 
@@ -459,9 +461,7 @@ Falta empilhar o que produziremos em cada iteração do loop de forma que facili
 dados <- rbind(dados, data.frame(conteudos, atributos))
 ```
 
-Chegou o momento de colocar no loop tudo que queremos que execute em cada vez que ele ocorrer. Ou seja, que ele imprima na tela a página que está executando, [AQUI]que para todas elas o código HTML seja examinado, lido no R e transformado em objeto XML, colete todos os links e todos os títulos e que empilhe. Lembrando que não podemos esquecer de definir a urlbase que estamos usando
-
-------
+Chegou o momento de colocar no loop tudo que queremos que execute em cada vez que ele ocorrer. Ou seja, que ele imprima na tela a página que está executando, que a url da página de resultados seja construída com a função paste, para todas elas o código HTML seja examinado, lido no R e transformado em objeto XML, colete todos os links e todos os títulos e que empilhe. Lembrando que não podemos esquecer de definir a urlbase que estamos usando e criar um data frame vazio para colocar todos os links e títulos coletados.
 
 ```{r}
 urlbase <- "http://www.al.sp.gov.br/alesp/busca/?q=merenda&page="
@@ -484,3 +484,5 @@ for (i in 1:162){
     
 }
 ```
+
+Pronto! Temos agora todos os títulos e links de todos os resultados do site da ALESP para a palavra "merenda" reunidos.
