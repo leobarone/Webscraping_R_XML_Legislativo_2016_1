@@ -36,3 +36,4 @@ R é uma linguagem/ambiente livre e gratuita. Os materiais e atividade da oficin
 - [Atividade 1] (https://github.com/leobarone/Webscraping_R_XML_Legislativo_2016_1/blob/master/Atividade_1.Rmd)
 - [Atividade 2] (https://github.com/leobarone/Webscraping_R_XML_Legislativo_2016_1/blob/master/Atividade_2.Rmd)
 - [Atividade 3] (https://github.com/leobarone/Webscraping_R_XML_Legislativo_2016_1/blob/master/Atividade_3.Rmd)
+- [Exemplo RSelenium] (https://github.com/leobarone/Webscraping_R_XML_Legislativo_2016_1/blob/master/exemplo_Selenium.R)
