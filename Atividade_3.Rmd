@@ -277,16 +277,16 @@ for (link in links_datafolha){
   pagina <- htmlParse(pagina)
   pagina <- xmlRoot(pagina)
   
-  titulo <- nulltona(xpathSApply(pagina, "//h1[@class = 'main_color main_title']", xmlValue))
-  datahora <- nulltona(xpathSApply(pagina, "//time", xmlValue))
-  pesquisa <- nulltona(xpathSApply(pagina, "//p[@class = 'stamp download']/a" , xmlGetAttr, name = "href"))
-
+  titulo <- nullToNA(xpathSApply(pagina, "//h1[@class = 'main_color main_title']", xmlValue))
+  datahora <- nullToNA(xpathSApply(pagina, "//time", xmlValue))
+  pesquisa <- nullToNA(xpathSApply(pagina, "//p[@class = 'stamp download']/a" , xmlGetAttr, name = "href"))
+  
   texto_vetor <- xpathSApply(pagina, "//article[@class = 'news']/p" , xmlValue)
   texto <- c()
   for (paragrafo in texto_vetor){
     texto <- paste(texto, paragrafo)
   }
-  texto <- nulltona(texto)
+  texto <- nullToNA(texto)
   
   dados <- rbind(dados, data.frame(titulo, datahora, pesquisa, texto, check.rows = T))
 }
