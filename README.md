@@ -19,12 +19,12 @@ Podem participar da oficina alun@s (e ex-alun@s) de pós-graduação e professor
 ## Inscrições:
 Para participar, preencha o fomulário do link a seguir. Por favor, indique em qual das edições pode participar (você pode indicar as duas se puder partipar de ambas). A inscrição é gratuita.
 
-Link para o formulário: http://goo.gl/forms/depBd7F99H
+Link para o [formulário] (http://goo.gl/forms/depBd7F99H)
 
 Inscrever-se até dia 03 de março de 2016 (ou 08/03 para alunos de Métodos III do Prof. Glauco Peres).
 
 ## Requisitos (IMPORTANTE)
-O requisito para participação é conhecer o básico da linguagem R OU realizar gratuitamente e antes do primeiro encontro o curso "Introduction to R" no site Datacamp: https://www.datacamp.com/courses/free-introduction-to-r, com duração aproximada de 4 horas. Aviso: sem um conhecimento básico da linguagem R não será possível aproveitar adequadamente a oficina. Por favor, não se inscreva se não puder atender a este requisito.
+O requisito para participação é conhecer o básico da linguagem R OU realizar gratuitamente e antes do primeiro encontro o curso "Introduction to R" no site [Datacamp] (https://www.datacamp.com/courses/free-introduction-to-r), com duração aproximada de 4 horas. Aviso: sem um conhecimento básico da linguagem R não será possível aproveitar adequadamente a oficina. Por favor, não se inscreva se não puder atender a este requisito.
 
 ## Certificado
 Está é uma oficina livre e gratuita e não haverá emissão de certificado de participação
@@ -34,5 +34,5 @@ R é uma linguagem/ambiente livre e gratuita. Os materiais e atividade da oficin
 
 ### Links para os materiais:
 - [Atividade 1] (https://github.com/leobarone/Webscraping_R_XML_Legislativo_2016_1/blob/master/Atividade_1.Rmd)
-- Atividade 2: https://github.com/leobarone/Webscraping_R_XML_Legislativo_2016_1/blob/master/Atividade_2.Rmd
-- Atividade 3: https://github.com/leobarone/Webscraping_R_XML_Legislativo_2016_1/blob/master/Atividade_3.Rmd
+- [Atividade 2] (https://github.com/leobarone/Webscraping_R_XML_Legislativo_2016_1/blob/master/Atividade_2.Rmd)
+- [Atividade 3] (https://github.com/leobarone/Webscraping_R_XML_Legislativo_2016_1/blob/master/Atividade_3.Rmd)
