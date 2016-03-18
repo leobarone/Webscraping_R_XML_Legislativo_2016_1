@@ -179,11 +179,11 @@ Vamos supor que queremos poupar nosso trabalho e sabemos que as únicas "tags" c
 
 "//partido"
 
-Ou "todas as 'tags' 'partido' que sejam descendentes de 'politico', não importa em qual nível hierarquíco do documento": 
+Ou "todas as tags 'partido' que sejam descendentes de 'politico', não importa em qual nível hierarquíco do documento": 
 
 "/politicos/politico//partido"
 
-Ou ainda "todas as 'tags' 'partido' que sejam descendentes de quaisquer 'tag' 'politico', não importa em qual nível hierarquíco do documento para qualquer uma das duas": 
+Ou ainda "todas as tags 'partido' que sejam descendentes de quaisquer tag 'politico', não importa em qual nível hierarquíco do documento para qualquer uma das duas": 
 
 "//politico//partido"
 
