@@ -403,11 +403,11 @@ O desafio a partir de agora é conectar o que aprendemos da raspagem de dados de
 
 # Atividade 2.2
 
-Agora que sabemos coletar de uma página da busca o link, por meio da extração de atributos de um node, e o título do resultado com o xmlValue, precisamos repetir o procedimento para todas as páginas de resultado.
+Agora que sabemos coletar de uma página da busca o link por meio da extração de atributos de um node e o título do resultado com a função "xmlValue", precisamos repetir o procedimento para todas as páginas de resultado.
 
-Fizemos isso na atividade 1, mas ainda usávamos a função "readHTMLTable". O objetivo é repetir o que fizemos lá, mas com as novas funções que vimos ao longo da atividade 2.1.
+Fizemos algo semelhante na atividade 1, mas ainda usávamos a função "readHTMLTable". O objetivo é repetir o que fizemos lá, mas com as novas funções que vimos ao longo da atividade 2.1.
 
-Para isso, vamos usar o for loop da atividade 1, para ir de uma página a outra.
+Para isso, vamos usar o "for loop" da atividade 1 para ir de uma página a outra.
 
 O primeiro passo é, mais uma vez, ter o nosso link da pesquisa que queremos coletar armazenado em um objeto. 
 
@@ -415,9 +415,11 @@ O primeiro passo é, mais uma vez, ter o nosso link da pesquisa que queremos col
 urlbase <- "http://www.al.sp.gov.br/alesp/busca/?q=merenda&page="
 ```
 
-## Função Paste 
-Como é possível reparar, o número da página fica ao final do link, por isso podemos utilizar uma nova função chamada "paste" ou "colar" ao invés da função "gsub". 
-O que faremos é colar nosso contador (o "i", aquilo que vai mudar a cada vez que o loop realizar uma iteração) no final do link. Então o que queremos é uma combinação do nosso url com o contador sem nada separando os dois. A função 'paste' é ideal para isso e funciona com os argumentos da seguinte maneira: onde você quer colar, o que você quer colar (pode ser mais de uma coisa), especificação de qual é o separador.
+## Função Paste
+
+Como é possível reparar, o número da página fica ao final do link, por isso podemos utilizar uma nova função chamada "paste" ou "colar" ao invés da função "gsub".
+
+O que faremos é colar nosso contador (o "i", aquilo que vai mudar a cada vez que o loop realizar uma iteração) no final do link. Então o que queremos é uma combinação do nosso url com o contador sem nada separando os dois. A função "paste" é ideal para isso e funciona com os argumentos da seguinte maneira: primeirao texto a ser colado, segundo texto a ser colado, terceiro, ...,  último, e, finalmente, a especificação de qual é o separador que você deseja entre os textos (pode ser vazio "").
 
 Na linguagem do R, escreveremos assim para o nosso caso:
 
@@ -425,13 +427,13 @@ Na linguagem do R, escreveremos assim para o nosso caso:
 paste(urlbase, i, sep = "")
 ```
 
-A 'url' é o endereço da página de busca, o i é o contador e o último argumento refere-se ao separador que igualamos a um par de aspas sem nada dentro, deixando claro que para funcionar corretamente nada, nem uma barra de espaço, deve ficar entre o endereço e o contador.
+A "URL" é o endereço da página de busca, o "i" é o contador numérico do loop e o último argumento refere-se ao separador que igualamos a um par de aspas sem nada dentro, deixando claro que para funcionar corretamente nada, nem uma barra de espaço, deve ficar entre o endereço e o contador.
 
 ## Coletando o conteúdo e o atributo de todos os links
 
-A lógica de coleta do atributo e do conteúdo de um node continua o mesma. A única diferença é que precisamos aplicar isso para todas as páginas. Agora que temos a url construída, podemos montar um for loop que fará isso para nós.
+A lógica de coleta do atributo e do conteúdo de um node continua o mesma. A única diferença é que precisamos aplicar isso para todas as páginas. Agora que temos a URL construída, podemos montar um "for loop" que fará isso para nós.
 
-No momento que essa atividade foi feita, a pesquisa pelo termo "merenda" tinha 162 páginas de resultado, o que implica que o nosso loop irá de 1, a primeira página, até a página 162, a última. Colocamos um print(i) para mostrar que página o loop está durante a execução.
+No momento que essa atividade foi feita, a pesquisa pelo termo "merenda" tinha 162 páginas de resultado, o que implica que o nosso loop irá de 1, a primeira página, até a página 162, a última. Colocamos um "print(i)" para mostrar que página o loop está durante a execução.
 
 ```{r}
 for (i in 1:162){
@@ -461,7 +463,7 @@ Falta empilhar o que produziremos em cada iteração do loop de uma forma que fa
 dados <- rbind(dados, data.frame(conteudos, atributos))
 ```
 
-Chegou o momento de colocar dentro loop tudo o que queremos que execute em cada uma das vezes que ele ocorrer. Ou seja, que imprima na tela a página que está executando, que a url da página de resultados seja construída com a função paste, para todas elas o código HTML seja examinado, lido no R e transformado em objeto XML, colete todos os links e todos os títulos e que empilhe. Lembrando que não podemos esquecer de definir a url que estamos usando e criar um data frame vazio para colocar todos os links e títulos coletados.
+Chegou o momento de colocar dentro loop tudo o que queremos que execute em cada uma das vezes que ele ocorrer. Ou seja, que imprima na tela a página que está executando, que a URL da página de resultados seja construída com a função paste, para todas elas o código HTML seja examinado, lido no R e transformado em objeto XML, colete todos os links e todos os títulos e que "empilhe". Lembrando que não podemos esquecer de definir a URK que estamos usando e criar um data frame vazio para colocar todos os links e títulos coletados antes de iniciar o loop.
 
 ```{r}
 urlbase <- "http://www.al.sp.gov.br/alesp/busca/?q=merenda&page="
