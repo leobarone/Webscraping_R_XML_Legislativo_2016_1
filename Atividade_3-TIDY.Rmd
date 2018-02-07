@@ -70,7 +70,6 @@ E também para o link do .pdf disponibilizado pelo DataFolha com o conteúdo com
 pesquisa <- rvest::html_node(pagina ,
                            xpath = '//p[@class = "stamp download"]/a') %>% 
   rvest::html_attr("href")
-pesquisa <- xpathSApply(pagina, "//p[@class = 'stamp download']/a" , xmlGetAttr, name = "href")
 print(pesquisa)
 ```
 
