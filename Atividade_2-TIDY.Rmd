@@ -294,7 +294,7 @@ pagina <- xml_root(pagina)
 
 Pronto. Temos o conteúdo da página como documento XML pronto para ser "raspado".
 
-Vamos começar usando a função "xml_find_all". Essa função, como o próprio nome deixa a entender, captura os "nodes" de um documento XML a partir de um caminho especificado por nós. Esse caminho, conhecido como xPatch, garante que rasparemos apenas a informação desejada.
+Vamos começar usando a função "xml_find_all". Essa função, como o próprio nome deixa a entender, captura os "nodes" de um documento XML a partir de um caminho especificado por nós. Esse caminho, conhecido como xPath, garante que rasparemos apenas a informação desejada.
 
 Nesse exemplo, o xPath é "//ul[@class='lista_navegacao']/li/a". Antes de rodar a função, você consegue entender esse xPath?
 
