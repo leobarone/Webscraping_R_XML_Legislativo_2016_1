@@ -151,8 +151,8 @@ Simples não? Geramos um endereço de URL e, após obtermos o endereço, captura
 
 ## Listas
 
-Um detalhe fundamental do resultado da função readHTMLTable é que o resultado dela é uma lista. Por que uma lista? Porque pode haver mais de uma tabela na página e cada tabela ocupará uma posição na lista. Para o R, uma lista pode combinar objetos de diversas classes: vetores, data frames, matrizes, etc. 
-No site da ALESP, já nessa pesquisa nos deparamos que a função readHTMLTable retorna várias tabelas e não apenas a dos resultados das proposições.
+Um detalhe fundamental do resultado da função `html_table` é que o resultado dela é uma lista. Por que uma lista? Porque pode haver mais de uma tabela na página e cada tabela ocupará uma posição na lista. Para o R, uma lista pode combinar objetos de diversas classes: vetores, data frames, matrizes, etc. 
+No site da ALESP, já nessa pesquisa nos deparamos que a função `html_table` retorna várias tabelas e não apenas a dos resultados das proposições.
 
 Como acessar objetos em uma lista? Podemos ulitizar colchetes. Porém, se utilizarmos apenas um colchete, estamos obtendo uma sublista. Por exemplo, vamos criar diferentes objetos e combiná-los em uma lista:
 
