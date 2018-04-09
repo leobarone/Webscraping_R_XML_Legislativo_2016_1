@@ -46,7 +46,7 @@ Tente sozinh@ e por aproximadamente 1~2 minutos construir um "xpath" (caminho em
 
 A resposta é: "//h1[@class = 'main_color main_title']"
 
-Usando agora as funções `rvest::html_node()` e `rvet::html_text()`, como vimos no tutorial anterior, vamos capturar o título da notícia:
+Usando agora as funções `rvest::html_node()` e `rvest::html_text()`, como vimos no tutorial anterior, vamos capturar o título da notícia:
 
 ```{r}
 titulo <- rvest::html_node(pagina ,
