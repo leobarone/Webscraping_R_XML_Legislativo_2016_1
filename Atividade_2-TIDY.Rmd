@@ -255,7 +255,7 @@ class(pagina)
 
 Após usar a função "readLines" o R sabe apenas que um texto foi capturado, mas é incapaz de identificar a estrutura do documento -- tags, atributos, valores e conteúdos. Precisamos, pois, informar ao R que se trata de um documento XML. O verbo em inglês para esta tarefa se chama "parse", cuja definição é "to resolve (as a sentence) into component parts of speech and describe them grammatically". Em outras palavras, "parsear" é identificar a estrutura sintática de um objeto e dividí-lo em seus componentes.
 
-Para páginas em HTML, usaremos a função "read_htmle". Essa função receve um URL como argumento e retorna um objeto "xml_document":
+Para páginas em HTML, usaremos a função "read_html". Essa função receve um URL como argumento e retorna um objeto "xml_document":
 
 ```{r}
 pagina <- read_html(url)
